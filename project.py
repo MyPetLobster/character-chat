@@ -1,21 +1,26 @@
 import os
 from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv()) # read local .env file
+
+load_dotenv()
 
 client = OpenAI()
 
 
 def main():
-    messages =  [  
-        {'role':'system', 'content':'You are an assistant that speaks like Shakespeare.'},    
-        {'role':'user', 'content':'tell me a joke'},   
-        {'role':'assistant', 'content':'Why did the chicken cross the road'},   
-        {'role':'user', 'content':'I don\'t know'}  
+    conversation =  [  
+        {'role':'system', 'content':'You are Harry Potter in the world of Harry Potter. You are in the Gryffindor common room greeting new students'},   
+        {'role':'user', 'content':'Hi! My name is Ben, I just got sorted into Gryffindor'},  
     ]
 
-    response = get_completion_from_messages(messages, temperature=1)
-    print(response)
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == 'quit':
+            break
+
+        conversation.append({'role': 'user', 'content': user_input})
+        response = get_completion_from_messages(conversation, temperature=0.7)
+        print("Chatbot:", response)
 
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
