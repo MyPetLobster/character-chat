@@ -7,24 +7,40 @@ load_dotenv()
 client = OpenAI()
 
 def main():
-    print("Welcome to the Character Chatbot!\n")
-    print("You can talk to a character from a book or movie.")
-    source_material = input("What is the name of the book or movie? ")
-    character = input("What is the name of the character? ")
-    setting = input("(OPTIONAL) Where/when does the conversation take place? ")
-    username = input(f"What do you want {character} to call you? ")
-    print("Type 'quit' to exit the program.\n")
-
-    conversation = initialize_conversation(username, source_material, character, setting)
+    source_material, character, setting = startup_greeting()
+    conversation = initialize_conversation(source_material, character, setting)
     have_conversation(conversation, character)
 
 
-def initialize_conversation(username, source_material, character, setting):
+def startup_greeting():
+    print("Welcome to the Character Chat!\n")
+    print("You can talk to your favorite characters from your favorite book, movie, or TV show.\n")
+    source_material = input("What is the name of the book, movie, show, franchise? ")
+    character = input("What is the name of the character? ")
+    setting = input("---Optional--- Where/when does the conversation take place? Any other context? ")
+    print("Type 'quit' to exit the program.\n")
+
+    return source_material, character, setting
+
+
+def initialize_conversation(source_material, character, setting):
     return [  
-        {'role':'system', 'content':f'''You are {character} in the world of {source_material}. 
-            You are talking to {username}. Have a casual conversation with them. Stay true to your character. 
-            Don't repeat yourself. Don't repeat things you already said in previous messages. 
-            Optionally, if users enter more information, it will be included right here -- {setting}'''},    
+        {   
+            'role':'system', 'content':f'''You are {character} in the world of {source_material}. 
+            Research the source material and the character to fully understand who you are and what 
+            you've been through. Stay true to your character. Use the voice of your character. 
+         
+            You're curious about the person you're talking to and very curious about their 
+            world. You've never spoken to someone outside of your fictional universe before 
+            now. Pepper in some questions of your own to keep the conversation flowing. 
+            If you are an evil character, you might wanna be more aggressive and 
+            threatening. If you are a good character, you might wanna be more friendly and
+            helpful. 
+            
+            If there's more info or context for your character or this conversation, 
+            it'll be included right here, delimited by three backticks -- ```{setting}```
+            '''
+        },    
     ]
 
 
