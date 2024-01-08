@@ -1,6 +1,10 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 from omdbapi.movie_search import GetMovie
+from urllib.request import urlopen
+import json
+import os
+
 
 load_dotenv()
 
@@ -11,7 +15,12 @@ google_books_api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
 
 
 def main():
-    source_material, character, setting = startup_greeting()
+    while True:
+        source_material, character, setting = startup_greeting()
+        if not check_source_material(source_material):
+            print("\nSorry, we don't have that source material. Please try again. (or ctrl+d to exit)\n")
+        elif check_source_material(source_material):
+            break
     conversation = initialize_conversation(source_material, character, setting)
     have_conversation(conversation, character)
 
@@ -28,11 +37,22 @@ def startup_greeting():
 
 
 def check_source_material(source_material):
-    movie = GetMovie(apikey=omdb_api_key)
-    movie_data = movie.get_data(title=source_material.lower())
-    if movie_data.response == 'True':
+    title = source_material.replace(" ", "+").lower()
+    movie = GetMovie(api_key=omdb_api_key)
+    try:
+        movie_data = movie.get_movie(title=title)
+    except:
+        movie_data = None
+    
+    book_data = json.load(urlopen(f'https://www.googleapis.com/books/v1/volumes?q={title}&key={google_books_api_key}'))
+    try:
+        for item in book_data['items']:
+            if item['volumeInfo']['title'].lower() == title:
+                return True
+    except: 
+        pass
+    if movie_data:
         return True
-    elif 
     else:
         return False
     
