@@ -13,7 +13,6 @@ omdb_api_key = os.getenv("OMDB_API_KEY")
 google_books_api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
 
 
-
 def main():
     while True:
         source_material, character, setting = startup_greeting()
@@ -78,15 +77,7 @@ def initialize_conversation(source_material, character, setting):
     ]
 
 
-def get_completion(prompt, model="gpt-3.5-turbo"):
-    messages = [{"role": "user", "content": prompt}]
-    response = client.completions.create(model=model,
-    messages=messages,
-    temperature=1.2)
-    return response.choices[0].message.content
-
-
-def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0):
+def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0.7):
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
