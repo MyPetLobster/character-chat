@@ -1,10 +1,14 @@
-import os
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
+from omdbapi.movie_search import GetMovie
 
 load_dotenv()
 
 client = OpenAI()
+omdb_api_key = os.getenv("OMDB_API_KEY")
+google_books_api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
+
+
 
 def main():
     source_material, character, setting = startup_greeting()
@@ -22,6 +26,16 @@ def startup_greeting():
 
     return source_material, character, setting
 
+
+def check_source_material(source_material):
+    movie = GetMovie(apikey=omdb_api_key)
+    movie_data = movie.get_data(title=source_material.lower())
+    if movie_data.response == 'True':
+        return True
+    elif 
+    else:
+        return False
+    
 
 def initialize_conversation(source_material, character, setting):
     return [  
