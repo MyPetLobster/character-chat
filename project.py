@@ -14,12 +14,14 @@ google_books_api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
 
 
 def main():
-    while True:
-        source_material, character, setting = startup_greeting()
-        if not check_source_material(source_material):
-            print("\nSorry, we don't have that source material. Please try again. (Enter 'quit' in any field to exit)\n")
-        elif check_source_material(source_material):
-            break
+    source_material, character, setting = startup_greeting()
+
+    messages = source_info_prompt(source_material, character)
+    source_material_exists = check_source_completion(messages)
+    if source_material_exists == 'no':
+        print(f"Sorry, {character} is not a character in {source_material}.")
+        exit()
+
     conversation = initialize_conversation(source_material, character, setting)
     have_conversation(conversation, character)
 
@@ -41,26 +43,30 @@ def startup_greeting():
     return source_material, character, setting
 
 
-def check_source_material(source_material):
-    title = source_material.replace(" ", "+").lower()
-    movie = GetMovie(api_key=omdb_api_key)
-    try:
-        movie_data = movie.get_movie(title=title)
-    except:
-        movie_data = None
-    
-    book_data = json.load(urlopen(f'https://www.googleapis.com/books/v1/volumes?q={title}&key={google_books_api_key}'))
-    try:
-        for item in book_data['items']:
-            if item['volumeInfo']['title'].lower() == title:
-                return True
-    except: 
-        pass
-    if movie_data:
-        return True
-    else:
-        return False
-    
+def source_info_prompt(source_material, character):
+    return [
+        {
+            'role':'system', 'content':'''You know more about movies books and shows than anyone on earth.
+            You know everything about every character in every movie, book, and show. You're job is to check
+            if a character exists in a real book, movie, show, or franchise. When prompted you will be provided
+            with the name of the book, movie, show, or franchise and the name of a character. You must determine
+            if the character provided is a character that exists within the provided source material. You must 
+            respond with a yes or no. If the character exists in the source material, you must respond with 'yes'.
+            If the character does not exist in the source material, you must respond with 'no'.
+            No more, no less.'''
+        },
+        {
+            'role':'user', 'content':f'''Is {character} a character in {source_material}?'''
+        }
+    ]
+
+
+def check_source_completion(messages, model="gpt-3.5-turbo", temperature=0.0):
+    response = client.chat.completions.create(model=model,
+    messages=messages,
+    temperature=temperature)
+    return response.choices[0].message.content
+
 
 def initialize_conversation(source_material, character, setting):
     return [  
@@ -104,3 +110,26 @@ def have_conversation(conversation, character):
 
 if __name__ == "__main__":
     main()
+
+
+
+# def check_source_material(source_material):
+#     title = source_material.replace(" ", "+").lower()
+#     movie = GetMovie(api_key=omdb_api_key)
+#     try:
+#         movie_data = movie.get_movie(title=title)
+#     except:
+#         movie_data = None
+    
+#     book_data = json.load(urlopen(f'https://www.googleapis.com/books/v1/volumes?q={title}&key={google_books_api_key}'))
+#     try:
+#         for item in book_data['items']:
+#             if item['volumeInfo']['title'].lower() == title:
+#                 return True
+#     except: 
+#         pass
+#     if movie_data:
+#         return True
+#     else:
+#         return False
+    
