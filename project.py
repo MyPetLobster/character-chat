@@ -17,7 +17,7 @@ def main():
     while True:
         source_material, character, setting = startup_greeting()
         if not check_source_material(source_material):
-            print("\nSorry, we don't have that source material. Please try again. (or ctrl+d to exit)\n")
+            print("\nSorry, we don't have that source material. Please try again. (Enter 'quit' in any field to exit)\n")
         elif check_source_material(source_material):
             break
     conversation = initialize_conversation(source_material, character, setting)
@@ -27,9 +27,15 @@ def main():
 def startup_greeting():
     print("Welcome to the Character Chat!\n")
     print("You can talk to your favorite characters from your favorite book, movie, or TV show.\n")
-    source_material = input("What is the name of the book, movie, show, franchise? ")
+    source_material = input("What is the name of the book, movie or show? ")
+    if source_material.lower() == 'quit':
+        exit()
     character = input("What is the name of the character? ")
+    if character.lower() == 'quit':
+        exit()
     setting = input("---Optional--- Where/when does the conversation take place? Any other context? ")
+    if setting.lower() == 'quit':
+        exit()
     print("Type 'quit' to exit the program.\n")
 
     return source_material, character, setting
