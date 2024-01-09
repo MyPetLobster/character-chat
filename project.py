@@ -1,13 +1,16 @@
 from openai import OpenAI
 from dotenv import load_dotenv
+from rich import print
+from rich.console import Console 
+from rich import box
+from rich.table import Table
 import os
 
 
 load_dotenv()
 
 client = OpenAI()
-omdb_api_key = os.getenv("OMDB_API_KEY")
-google_books_api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
+console = Console()
 
 
 def main():
@@ -24,12 +27,15 @@ def main():
 
 
 def greet_user():
-    print("Welcome to the Character Chat!\n")
-    print("You can talk to your favorite characters from your favorite book, movie, or TV show.\n")
-    source_material = input("What is the name of the book, movie or show? ").capitalize()
-    character = input("What is the name of the character? ").capitalize()
-    setting = input("---Optional--- Where/when does the conversation take place? Any other context? ")
-    print("Type 'quit' to exit the program.\n")
+    intro_table = Table(box=box.SQUARE_DOUBLE_HEAD)
+    intro_table.add_column("Welcome to the Character Chat!", header_style="bold cyan", justify="center")
+    intro_table.add_row('''This program allows you to have a conversation with your favorite characters from your favorite books, movies, and TV shows.\n\nTalk about anything you want, but be careful who you summon. Not all characters are friendly.\n\nTo get started, you'll just have to enter the name of the source material and the character you want to talk to.''')
+    print(intro_table)
+    
+    source_material = console.input("\n[bold sea_green1]What book, movie, show, or franchise is the character from?[/] ").capitalize()
+    character = console.input("\n[bold thistle3]What is the name of the character?[/] ").capitalize()
+    setting = console.input("\n[bold grey78]Where/when does the conversation take place? Any other context?[/] [italic](optional)[/] ")
+    print("\n[italic]Type [encircle red]'quit'[encircle red/] to exit the program at any time.[italic/]")
 
     return source_material, character, setting
 
@@ -89,11 +95,11 @@ def have_conversation(conversation, character):
 
     try:
         while True:
-            user_input = input("You: ")
+            user_input = console.input("\n[bold aquamarine3]You: [/]")
             conversation_file.write(f"You: {user_input}\n")
             if user_input.lower() == 'quit':
                 print("Do you want to save this conversation? (y/n)")
-                save = input("You: ")
+                save = input("[bold aquamarine3]You: ")
                 if save.lower() == 'n':
                     conversation_file.close()
                     os.remove(f"{character}_conversation.txt")
@@ -106,7 +112,7 @@ def have_conversation(conversation, character):
             conversation.append({'role': 'user', 'content': user_input})
             response = get_completion_from_messages(conversation, temperature=0.7)
             conversation.append({'role': 'assistant', 'content': response})
-            print(f"{character}:", response)
+            print(f"\n[bold sandy_brown]{character}: [/]", response)
             conversation_file.write(f"{character}: {response}\n")
     finally:
         conversation_file.close()

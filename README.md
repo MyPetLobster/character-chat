@@ -123,14 +123,10 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
         </p>
         <code>
         {
-            'role':'system', 'content':'''You know more about movies books and shows than anyone on earth.
-            You know everything about every character in every movie, book, and show. You're job is to check
-            if a character exists in a real book, movie, show, or franchise. When prompted you will be provided
-            with the name of the book, movie, show, or franchise and the name of a character. You must determine
-            if the character provided is a character that exists within the provided source material. You must 
-            respond with a yes or no. If the character exists in the source material, you must respond with 'yes'.
-            If the character does not exist in the source material, you must respond with 'no'.
-            No more, no less.'''
+            'role':'system', 'content':'''You are a scholar of all works of fiction. But the only words you can
+            speak are "yes" and "no". You will be asked to identify a character from a work of fiction. If the character
+            exists in a real work of fiction, respond with "yes". If you cannot identify the character within the specified
+            work of fiction, respond with "no".'''
         },
         </code>
         <p></p>
@@ -140,3 +136,20 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
         }
         </code>
     </li>
+    <h2>Exporting the chat to a text file</h2>
+    <li>
+        The next thing that I had to figure out was how to export the conversation to a text file. Creating and writing to the file was as simple as adding a few lines of code to my have_conversation() function. However, I wanted to give the user
+        the option to save or delete the conversation when they quit. So I actually create the text file to record the conversation when it starts. But then upon quitting the application, I prompt the user to save the file. If they respond 'no', then I delete the file. Took me a minute to figure out that I needed to use the os module to delete the file.
+    </li>
+    <h2>Colorful UI with the 'rich' module</h2>
+    <li>
+        <p>
+            I spent a little time reading about how to make a command line interface more colorful and interactive. I found a few options, but decided to go with 'rich' because it seemed to be the most popular and well documented. The first thing I did was import the 'rich print' method and read about how to use it. Figuring that out was very simple. I love how the syntax is familiar and straightforward. Adding the style elements inside square brackets and being able to close the style with '[/]', reminds me a lot of HTML tags. I also like how you can chain styles together. I used this to create a colorful header for the chatbot. I also used the 'rich print' method to print the conversation to the terminal. I used a for loop to iterate through the conversation list and print each message. I used an if statement to check if the message was from the user or the chatbot, and then used the appropriate style for each. 
+        </p>
+        <p>
+            This was all well and good, but I wanted more. I envisioned a box surrounding my application in the terminal. I wanted it to look and feel like you were using an application, making it more user-friendly for people uncomfortable using the command line. In the rich documentation, I found the section about console objects and 
+            the rich.box and rich.panel. (sidebar -- The documentation for Rich is phenomenal!)
+        </p>
+        <p>
+        </p>
+    
