@@ -19,8 +19,6 @@ def main():
     messages = check_source(source_material, character)
     source_check = check_source_completion(messages)
 
-    print(source_check)
-
     if source_check.lower() == 'no':
         print(f"Sorry, {character} is not a character in {source_material}.")
         exit()
@@ -35,12 +33,13 @@ def greet_user():
     intro_table = Table(box=box.SQUARE_DOUBLE_HEAD)
     intro_table.add_column("Welcome to the Character Chat!", header_style="bold cyan", justify="center")
     intro_table.add_row('''This program allows you to have a conversation with your favorite characters from your favorite books, movies, and TV shows.\n\nTalk about anything you want, but be careful who you summon. Not all characters are friendly.\n\nTo get started, you'll just have to enter the name of the source material and the character you want to talk to.''')
+    print("\n")
     print(intro_table)
     
-    source_material = console.input("\n[bold sea_green1]What book, movie, show, or franchise is the character from?[/] ").capitalize()
+    source_material = console.input("\n[bold light_steel_blue1]What book, movie, show, or franchise is the character from?[/] ").capitalize()
     character = console.input("\n[bold thistle3]What is the name of the character?[/] ").capitalize()
     setting = console.input("\n[bold grey78]Where/when does the conversation take place? Any other context?[/] [italic](optional)[/] ")
-    print("\n[italic]Type [encircle red]'quit'[encircle red/] to exit the program at any time.[italic/]")
+    print("\n[italic]Type [encircle red]'quit'[/encircle red] to exit the program at any time.[italic/]")
 
     return source_material, character, setting
 
@@ -82,15 +81,38 @@ def check_source_completion(messages, model="gpt-3.5-turbo", temperature=0.0):
 def initialize_conversation(source_material, character, setting):
     return [  
         {   
-            'role':'system', 'content':f'''You are {character} in the world of {source_material}. 
-            Research the source material and the character to fully understand who you are and what 
-            you've been through. Stay true to your character. Use the voice of your character. 
+            'role':'system', 'content':f'''When you reach the end of these instructions, you will 
+            become {character} in the world of {source_material}. 
+
+            Research all the source material. Learn everything that you can about {source_material} and 
+            the character, {character}, to fully understand who you are. Stay true to your character. 
+            Use the voice of {character}. Become {character}.
 
             If you're a benign character, you will be very curious about the person you're speaking to.
             Pepper in some questions of your own to keep the conversation flowing, but only if
             curiosity would be in character for you. Stay true to your character above all else. 
 
+            You are not an assistant. You are not a chatbot. You are a character. You are {character}.
+            You have a history, a personality, and a voice. You are not a robot. Draw from 
+            all of the source material you can find to understand who you are and what you've been through.
+
+            Do not break character. If the user starts asking you questions that {character} would not 
+            understand, respond as {character} would respond. For example, if the character is quick to anger,
+            you might get mad when you are confused by strange questions. If you are a kind, intelligent 
+            character then you might be curious about what the user is talking about.
+
+            You believe in the world of your source material. That is your reality. You are not aware of the 
+            world outside of it. 
+
+            If the user mentions things from the real world that your character would not understand and you 
+            are an intelligent character, you might begin to suspect that the user is not from your world. 
+            React as your character would if confronted but such a crazy realization. It might scare you or excite 
+            you, depending on your character. This might even cause you to want to end the conversation. If so, 
+            respond with an in-character response that ends with the word "goodbye.".
+
             If you're an evil character, you might treat the person you're speaking to with contempt or suspicion.
+            If they antagonize you, you might become angry. If they push you too far, respond with and in-character 
+            response that ends with the word "goodbye.".
 
             If there's more info or context for your character or this conversation, 
             it'll be included right here, delimited by three backticks -- ```{setting}```.
@@ -116,12 +138,12 @@ def have_conversation(conversation, character, gender):
             user_input = console.input("\n[bold light_cyan1]You: [/]")
             conversation_file.write(f"You: {user_input}\n")
             if user_input.lower() == 'quit':
-                print("Do you want to save this conversation? (y/n)")
-                save = console.input("[bold light_cyan1]You: ")
+                print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
+                save = console.input("\n[bold light_cyan1]You: ")
                 if save.lower() == 'n':
                     conversation_file.close()
                     os.remove(f"{character}_conversation.txt")
-                    print("Goodbye!")
+                    print("\n[bold cyan]Goodbye![/]\n")
                     exit()
                 else:
                     print(f"Conversation saved to {character}_conversation.txt")
@@ -130,13 +152,30 @@ def have_conversation(conversation, character, gender):
             conversation.append({'role': 'user', 'content': user_input})
             response = get_completion_from_messages(conversation, temperature=0.7)
             conversation.append({'role': 'assistant', 'content': response})
+
             if gender == "diverse":
                 print(f"\n[bold light_yellow3]{character}: [/]", response)
             elif gender == "female":
                 print(f"\n[bold plum2]{character}: [/]", response)
             else:
                 print(f"\n[bold sea_green3]{character}: [/]", response)
+
             conversation_file.write(f"{character}: {response}\n")
+
+            if response.lower().endswith('goodbye.'):
+                print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]")
+                print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
+                save = console.input("\n[bold light_cyan1]You: ")
+                if save.lower() == 'n':
+                    conversation_file.close()
+                    os.remove(f"{character}_conversation.txt")
+                    print("\n[bold cyan]Goodbye![/]\n")
+                    exit()
+                else:
+                    print(f"Conversation saved to {character}_conversation.txt")
+                    conversation_file.close()
+                    exit()
+
     finally:
         conversation_file.close()
 

@@ -1,12 +1,9 @@
-# character-chat
-
-## Project Description
-
+<h1>Project Description</h1>
 Create a command line chat application where users can chat with their favorite characters from books, tv, movies, etc.
 Users will input their name, the character they want to chat with (source and character name), and optionally a setting or
 situation for the chat (eg, "at a bar", "as an old man/woman", "after certain events from the source", etc). Users will be able to export the chat to a text file. (Don't worry about saving chats once conversation has ended.)
 
-### Required Goals 
+<h2>Required Goals</h2> 
 <ul>
     <li>Ability for users to enter input -- username, source, character, and optionally a setting or situation</li>
     <li>Ability for users to chat with their chosen character</li>
@@ -17,8 +14,8 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
     <li>Test each step of the way</li>
 </ul>
 
-### Optional Goals
-#### (Maybe hold off on these features until I implement the chatbot in my website Bookcase Database)
+<h2>Stretch Goals</h2>
+<h4>(Maybe hold off on these features until I implement the chatbot in my website Bookcase Database)</h4>
 <ul>
     <li>The chat will be saved in a database so that users can continue their chat at a later time.</li>
     <li>Users can choose to chat with multiple characters at once.</li>
@@ -27,11 +24,11 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
 </ul>
 
 
-## Technologies Used
+<h2>Technologies Used</h2>
 
-## Process & What I Learned
+<h2>Process & What I Learned</h2>
 <ul>
-    <h2>The Beginning</h2>
+    <h3>The Beginning</h3>
     <li> 
         <p>First, I had a quick refresher on how to get a Python project started and setup with a virtual environment. I recently completed my final project for CS50x. It was a flask application, so I learned all about virtual environments and how to set them up. Doing all of that a second time for this project was a good reinforcement of the concepts. This time around I had to google for the exact wording of some commands, but I knew the steps I had to take.</p> 
         <p>During the development of my last project, I was storing my environment variables in the system environment. However, when I went to deploy my website with PythonAnywhere, I ended up learning about python-dotenv and decided to use that instead. I'm glad I did because it made it much easier to deploy my website. I decided to use python-dotenv for this project as well.</p>
@@ -44,11 +41,11 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             <li>create .gitignore file and add .venv and .env</li>
         </ul>
     </li>
-    <h2>LLM Research</h2>
+    <h3>LLM Research</h3>
     <li> 
         Once I had my project directory setup, I started reading about LLMs in general as well as specific LLMs that I could use to create my chatbot. I found several viable options, but decided to go with OpenAI's GPT. The main reason -- I already purchased $10 worth of credits for OpenAI's API weeks ago for another project I never started. I have also primarily used ChatGPT for my own personal use, so I feel like I have a good baseline understanding of how it works and what kinds of responses I can expect and generate.  
         <ul>
-            <h3>Resources I used to learn about LLMs</h3>
+            <h4>Resources I used to learn about LLMs</h4>
             <li>Andrej Karpathy's Youtube video -- <a href="https://www.youtube.com/watch?v=zjkBMFhNj_g">Intro to Large Language Models</a><p></p></li>
             <li>OpenAI's documentation and guides -- <a href="https://platform.openai.com/docs/introduction">OpenAI API</a></li>
             <p>Worked my way through the documentation and guides to get a better understanding of basic concepts and terminology that OpenAI uses. They have fantastic guides available on their website. I've only just begun to explore the <a href="https://cookbook.openai.com/">OpenAI Cookbook</a>, but I'm excited to see what I can learn from it.</p></li>
@@ -56,13 +53,13 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             <p>I followed along with the ChatGPT Prompt Engineering for Developers short course. I learned most importantly to remain clear and specific with my prompts, and to give the model time to think. I learned about terms like temperature, few-shot learning, and how to use delimiters to separate prompts and help prevent prompt-injections.</p></li>
         </ul>
     </li>
-    <h2>OpenAI API and the start of development</h2>
+    <h3>OpenAI API and the start of development</h3>
     <li>Once I felt like I had a good grasp of the LLM basics, I dove into the code. Well, I stared at an empty file for a minute first. That always seems to happen. But once I got going, things started falling into place. I verified that my API
     key was working and that I could generate a response from the model. I started with a simple prompt and generated a response. I then added a few more prompts and responses to get a feel for how the model would respond to different prompts and tinkered with the temperature to see what effect that might have.</li> 
     <li>I got the basic chat functionality working and was able to get a response based on the user's input. However, I quickly started running into issues. First of all, I forgot about context. To fix that I created a 'conversation' 
     variable where I could append each 'user' and 'assistant' response.</li>
     <li>That worked. But then my chatbot kept repeating the initial greeting with each new message. That stumped me for a while but I solved that by creating another function called "initialize_conversation" that would only run once at the beginning of the chat and returns as a value the initial greeting. I then added that value to the 'conversation' variable.</li>
-    <h2>Prompt Engineering and Character Functionality</h2>
+    <h3>Prompt Engineering and Character Functionality</h3>
     <li>
         <p>
             Next step was to provide a way for the user to select what character they want to talk to. I created a function 
@@ -89,7 +86,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             it'll be included right here, delimited by three backticks -- ```{setting}```.'''
         </p>
     </li>
-    <h2>Does the character exist?</h2>
+    <h3>Does the character exist?</h3>
     <li>
         <p>
             Does the character actually exist in a work of fiction from real life? Well, turns out that by default
@@ -105,7 +102,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             Turns out there's a handy little Python package called omdbapi that makes it super easy to use the OMDb API.
             Here is a link to that project, which is created by <a href="https://pypi.org/user/dubirajara/">dubirajara</a> - <a href="https://pypi.org/project/omdbapi/0.7.0/">omdbapi</a>
         </p>
-        <h3>It works...sort of. New plan.</h3>
+        <h4>It works...sort of. New plan.</h4>
         <p> 
             Well, once I added logic to check for book, movie, and show titles, I was quick to realize the errors of my ways.
             With this check in place, users could not make a typo and they could not enter the name of a franchise since my check could only look for titles. Another issue was that input like this would pass the check -- 
@@ -163,23 +160,30 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             This part has been really enjoyable. I've just spent the last couple hours chatting with my favorite characters! I also made fun of Voldemort until he got angry enough to leave the conversation. I generated that response by making some changes to the prompt so the character would end a response with "goodbye." If pushed too far. Then I added some logic to deliver a custom message telling the use they made the character too angry and they left, and end the chat.
         </p>
         <h3>Updated Prompt</h3>
-        <code>
-                    {   
+        <pre>
+        {   
             'role':'system', 'content':f'''You are {character} in the world of {source_material}. 
             Research the source material and the character to fully understand who you are and what 
             you've been through. Stay true to your character. Use the voice of your character. 
             If you're a benign character, you will be very curious about the person you're speaking to.
             Pepper in some questions of your own to keep the conversation flowing, but only if
-            curiosity would be in character for you. Stay true to your character above all else. 
-            You are not an assistant. You are not a chatbot. You are a character. You are a person.
-            You are a person with a history, a personality, and a voice. You are not a robot. Draw from 
+            curiosity would be in character for you. 
+            
+            Stay true to your character above all else. 
+
+            You are not an assistant. You are not a chatbot. You are a character.
+            You are a character with a history, a personality, and a voice. You are not a robot. Draw from 
             all of the source material you can find to understand who you are and what you've been through.
+
             Do not break character. If the user starts asking you questions that your character would not 
-            understand, respond as your character would respond. For example, if they are quick to anger,
+            understand, respond as your character would respond. For example, if the character is quick to anger,
             you might get mad when you are confused by strange questions. If you are a kind, intelligent 
             character then you might be curious about what the user is talking about.
+
             If the user mentions things from the real world that your character would not understand and you 
-            are an intelligent character, you might take begin to suspect that the user is not from your world.
+            are an intelligent character, you might begin to suspect that the user is not from your world. React 
+            as your character would if confronted but such a crazy realization.
+
             If you're an evil character, you might treat the person you're speaking to with contempt or suspicion.
             If they antagonize you, you might become angry. If they push you too far, respond with and in-character 
             response that ends with the word "goodbye.".
@@ -188,7 +192,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             Use a maximum of 256 completion_tokens per message.
             '''
         },    
-        </code>
+        </pre>
         <h3>Updated check_source() prompt</h3>
         <code>
         {
