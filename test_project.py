@@ -1,47 +1,81 @@
 import pytest
-from project import (
-    check_source_material,
-    initialize_conversation,
-    get_completion_from_messages,
-)
+from project import check_character_existence, check_source_completion, initialize_conversation, get_completion_from_messages
 
-# Define some test data
-valid_source_material = "Harry Potter"
-invalid_source_material = "Invalid Source Material"
-valid_character = "Harry Potter"
-setting = "Hogwarts School of Witchcraft and Wizardry"
+# Define test data
+valid_source_material = ["Harry Potter", "harry ptter", "Harry Potter and the Sorcerer's Stone"]
+invalid_source_material = ["hdfhdfsk", "family guy", "LotR"]
+valid_characters = ["Harry", "hermione", "Ron Weasley", "Hedwig"]
+invalid_characters = ["Cory", "Topanga", "wizard", "Darth Vader"]
+setting_list = ["in the Forbidden Forest", "In the Great Hall", "walking to Hogsmeade", "in the Chamber of Secrets"]
+
+# Test check_character_existence() and check_source_completion()
+# Check valid_source and valid_character
+@pytest.mark.parametrize("source_material, character", [(s, c) for s in valid_source_material for c in valid_characters])
+def test_check_source_valid(source_material, character):
+    source_check = check_character_existence(source_material, character)
+    assert source_check.lower() == 'diverse' or source_check.lower() == 'female' or source_check.lower() == 'male'
+
+# Check invalid_source and invalid_character
+@pytest.mark.parametrize("source_material, character", [(s, c) for s in invalid_source_material for c in invalid_characters])
+def test_check_source_invalid_1(source_material, character):
+    source_check = check_character_existence(source_material, character)
+    assert source_check.lower() == 'no'
+
+# Check valid_source and invalid_character
+@pytest.mark.parametrize("source_material, character", [(s, c) for s in valid_source_material for c in invalid_characters])
+def test_check_source_invalid_2(source_material, character):
+    source_check = check_character_existence(source_material, character)
+    assert source_check.lower() == 'no'
+
+# Check invalid_source and valid_character
+@pytest.mark.parametrize("source_material, character", [(s, c) for s in invalid_source_material for c in valid_characters])
+def test_check_source_invalid_3(source_material, character):
+    source_check = check_character_existence(source_material, character)
+    assert source_check.lower() == 'no'
 
 
-# Test check_source_material function
-def test_check_valid_source_material():
-    assert check_source_material(valid_source_material) is True
-
-
-def test_check_invalid_source_material():
-    assert check_source_material(invalid_source_material) is False
-
-
-# Test initialize_conversation function
+# Test initialize_conversation and get_completion_from_messages function -- GENERIC CHECK
 def test_initialize_conversation():
-    conversation = initialize_conversation(valid_source_material, valid_character, setting)
+    conversation = initialize_conversation(valid_source_material[0], valid_characters[0], setting_list[0])
     assert len(conversation) == 1
     assert isinstance(conversation[0], dict)
     assert "system" in conversation[0]["role"]
-    assert valid_source_material in conversation[0]["content"]
-    assert valid_character in conversation[0]["content"]
-    assert setting in conversation[0]["content"]
+    assert valid_source_material[0] in conversation[0]["content"]
+    assert valid_characters[0] in conversation[0]["content"]
+    assert setting_list[0] in conversation[0]["content"]
 
-
-# Test get_completion_from_messages functions
 def test_get_completion_from_messages():
     messages = [
         {"role": "user", "content": "Tell me a joke."},
         {"role": "assistant", "content": "Why did the chicken cross the road?"},
     ]
-    response = get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0.7)
+    response = get_completion_from_messages(messages)
     assert isinstance(response, str)
     assert response != ""
 
+# Test initialize_conversation and get_completion_from_messages function -- SPECIFIC TEST 
+def test_initialize_conversation_specific():
+    conversation = initialize_conversation(valid_source_material[0], valid_characters[1], setting_list[0])
+    assert len(conversation) == 1
+    assert isinstance(conversation[0], dict)
+    assert "system" in conversation[0]["role"]
+    assert valid_source_material[0] in conversation[0]["content"]
+    assert valid_characters[0] in conversation[0]["content"]
+    assert setting_list[0] in conversation[0]["content"]
 
-if __name__ == "__main__":
-    pytest.main()
+# Provide source = "Harry Potter", character = "Hermione", setting = "in the Forbidden Forest"
+def test_get_completion_from_messages_specific():
+    conversation = initialize_conversation(valid_source_material[0], valid_characters[1], setting_list[0])
+    conversation.append(
+        {
+            "role": "user", "content": '''What is your name? Where are we right now? Respond only with your name and our 
+            current location separated by a comma. No other puncuation or quotation marks.'''
+        },
+    )
+    response = get_completion_from_messages(conversation)
+    assert isinstance(response, str)
+    responses = response.split(",")
+    name = responses[0].strip().lower()
+    location = responses[1].strip().lower()
+    assert name == "hermione" or name == "hermione granger"
+    assert "forbidden forest" in location

@@ -6,18 +6,20 @@ from rich import box
 from rich.table import Table
 import os
 
-
+# load environment variables
 load_dotenv()
 
+# create an instance of the OpenAI client
 client = OpenAI()
+
+# create an instance of the Rich console
 console = Console()
 
 
 def main():
     source_material, character, setting = greet_user()
 
-    messages = check_source(source_material, character)
-    source_check = check_source_completion(messages)
+    source_check = check_character_existence(source_material, character)
 
     if source_check.lower() == 'no':
         print(f"Sorry, {character} is not a character in {source_material}.")
@@ -28,8 +30,14 @@ def main():
     conversation = initialize_conversation(source_material, character, setting)
     have_conversation(conversation, character, gender)
 
-
+# Function to greet user and collect initial information
 def greet_user():
+    """
+    Greets the user, collects information about the source material, character, and setting.
+
+    Returns:
+        tuple: A tuple containing source material, character, and setting entered by the user.
+    """
     intro_table = Table(box=box.SQUARE_DOUBLE_HEAD)
     intro_table.add_column("Welcome to the Character Chat!", header_style="bold cyan", justify="center")
     intro_table.add_row('''This program allows you to have a conversation with your favorite characters from your favorite books, movies, and TV shows.\n\nTalk about anything you want, but be careful who you summon. Not all characters are friendly.\n\nTo get started, you'll just have to enter the name of the source material and the character you want to talk to.''')
@@ -43,9 +51,20 @@ def greet_user():
 
     return source_material, character, setting
 
+# define a function to check if the character exists in the given source material
+def check_character_existence(source_material, character):
+    """
+    Checks if a character exists in a given source material.
 
-def check_source(source_material, character):
-    return [
+    Args:
+        source_material (str): The source material (e.g., book, movie).
+        character (str): The character's name.
+
+    Returns:
+        str: 'male', 'female', 'diverse' if character exists, 'no' otherwise.
+    """
+    # Prepare a message for OpenAI
+    messages = [
         {
             'role':'system', 'content':'''You are a scholar of all works of fiction. But the only words you can
             speak are "no", "male", "female", and "diverse". You will be asked to identify a character from a work of fiction, 
@@ -70,15 +89,30 @@ def check_source(source_material, character):
         }
     ]
 
+    # Send message to OpenAI and get response
+    response = check_source_completion(messages)
+    return response.lower()
 
+# define a function to send message to OpenAI and get response, set to temperature=0.0 for source check
 def check_source_completion(messages, model="gpt-3.5-turbo", temperature=0.0):
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
     return response.choices[0].message.content
 
-
+# define a function to initialize the conversation, providing initial instructions for OpenAI
 def initialize_conversation(source_material, character, setting):
+    """
+    Initializes the conversation with instructions for the character.
+
+    Args:
+        source_material (str): The source material (e.g., book, movie).
+        character (str): The character's name.
+        setting (str): Additional context or setting for the conversation (optional).
+
+    Returns:
+        list: A list containing a system message with instructions for the character.
+    """
     return [  
         {   
             'role':'system', 'content':f'''When you reach the end of these instructions, you will 
@@ -114,23 +148,35 @@ def initialize_conversation(source_material, character, setting):
             If they antagonize you, you might become angry. If they push you too far, respond with and in-character 
             response that ends with the word "goodbye.".
 
-            If there's more info or context for your character or this conversation, 
-            it'll be included right here, delimited by three backticks -- ```{setting}```.
+            If there's more info about the setting or context for your character or this conversation, it'll be included right here, 
+            delimited by three backticks -- setting = ```{setting}```. If the setting is "The Forbidden Forest", that is where
+            the conversation is taking place.
 
             Use a maximum of 256 completion_tokens per message.
             '''
         },    
     ]
 
-
+# define a function to send message to OpenAI and get response, set to temperature=0.9 for conversation
 def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0.9):
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
     return response.choices[0].message.content
 
-
+# Function to continue conversation
 def have_conversation(conversation, character, gender):
+    """
+    Facilitates the conversation between the user and the character.
+
+    Args:
+        conversation (list): A list of conversation messages.
+        character (str): The character's name.
+        gender (str): The character's gender ('male', 'female', 'diverse').
+
+    Returns:
+        None
+    """
     conversation_file = open(f"{character}_conversation.txt", "w")
 
     try:
@@ -178,7 +224,6 @@ def have_conversation(conversation, character, gender):
 
     finally:
         conversation_file.close()
-
 
 
 if __name__ == "__main__":
