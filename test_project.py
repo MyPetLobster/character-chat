@@ -11,25 +11,25 @@ setting_list = ["in the Forbidden Forest", "In the Great Hall", "walking to Hogs
 # Test check_character_existence() and check_source_completion()
 # Check valid_source and valid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in valid_source_material for c in valid_characters])
-def test_check_source_valid(source_material, character):
+def test_check_character_existence(source_material, character):
     source_check = check_character_existence(source_material, character)
     assert source_check.lower() == 'diverse' or source_check.lower() == 'female' or source_check.lower() == 'male'
 
 # Check invalid_source and invalid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in invalid_source_material for c in invalid_characters])
-def test_check_source_invalid_1(source_material, character):
+def test_check_character_existence_invalid_1(source_material, character):
     source_check = check_character_existence(source_material, character)
     assert source_check.lower() == 'no'
 
 # Check valid_source and invalid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in valid_source_material for c in invalid_characters])
-def test_check_source_invalid_2(source_material, character):
+def test_check_character_existence_invalid_2(source_material, character):
     source_check = check_character_existence(source_material, character)
     assert source_check.lower() == 'no'
 
 # Check invalid_source and valid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in invalid_source_material for c in valid_characters])
-def test_check_source_invalid_3(source_material, character):
+def test_check_character_existence_invalid_3(source_material, character):
     source_check = check_character_existence(source_material, character)
     assert source_check.lower() == 'no'
 
