@@ -1,5 +1,5 @@
 import pytest
-from project import check_character_existence, check_source_completion, initialize_conversation, get_completion_from_messages
+from project import check_character_existence, initialize_conversation, get_completion_from_messages
 
 # Define test data
 valid_source_material = ["Harry Potter", "harry ptter", "Harry Potter and the Sorcerer's Stone"]
