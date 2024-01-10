@@ -93,7 +93,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             ChatGPT doesn't give a damn. It'll just go with the flow and make up a character entirely. I wanted to 
             change that. I had to think of a way to check if the character exists. I started by connecting the Google
             Books API to my project, since I just finished another project that used the API. I created a function 
-            called check_source() that checked if the title of the source material was in the Google Books API.
+            called check_character_exists() that checked if the title of the source material was in the Google Books API.
         </p>
         <p>
             Then for movies and TV shows, I figured that I would use the IMDB API. At first glance, I thought the only 
@@ -113,7 +113,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
         </p>
         <p>
             While this could undoubtedly lead to some very fun and entertaining results, it's not what I wanted for my chatbot.
-            I started thinking about what other logic I could add to my checks. I was thinking regex to check for similar titles, then also trying to find another API that could give me characters from sources. But then it hit me. What have I been reading all about lately? LLMs! I could use the same LLM I'm using for the chatbot to check if the character exists. I decided to try to recreate the check_source() function using GPT. 
+            I started thinking about what other logic I could add to my checks. I was thinking regex to check for similar titles, then also trying to find another API that could give me characters from sources. But then it hit me. What have I been reading all about lately? LLMs! I could use the same LLM I'm using for the chatbot to check if the character exists. I decided to try to recreate the check_character_exists() function using GPT. 
         </p>
         <p>
             It worked wonderfully! I decided to keep this separated from the chatbot itself. So I created a new system prompt, and used an f-string to insert the source_material and character name into the first "user" message. Then I just returned the response from the model, which I forced to be a "yes" or "no". Here is the prompt I used:
@@ -149,7 +149,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
         </p>
         <p>
             I created a console object then used console.input to style the inputs and console.box to style the "Welcome screen". I used the console markup syntax to add style to the conversation itself and the system messages. 
-            I also modified my check_source() prompt message to tell the model to respond with "female", "male", "diverse", or
+            I also modified my check_character_exists() prompt message to tell the model to respond with "female", "male", "diverse", or
             "no". I wanted to be able to color the name of the character in the conversation based on their gender. This worked
             swimmingly. 
         </p>
@@ -193,7 +193,7 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             '''
         },    
         </pre>
-        <h3>Updated check_source() prompt</h3>
+        <h3>Updated check_character_exists() prompt</h3>
         <code>
         {
             'role':'system', 'content':'''You are a scholar of all works of fiction. But the only words you can
@@ -227,6 +227,22 @@ situation for the chat (eg, "at a bar", "as an old man/woman", "after certain ev
             While figuring this out, I must have ran those tests 10 or 15 times. Oops!! I used more tokens doing the pytest 
             testing than I have in all my development thus far. Didn't consider that. I'll have to be more careful with my
             testing.
+        </p>
+        <p>
+            Once I finished testing the check_character_exists() function, I commented those tests out to save tokens and moved
+            on to testing the actual conversation elements. I created one test that checks if the inputs are being passed to the
+            correct variables. Then I created a test to check if the conversation is being appended correctly and that the responses
+            are not empty. 
+        </p>
+        <p> 
+            Then I copied the same structure of that test and created one to make sure that the LLM is able to correctly identify 
+            "who" they are and when given a value for setting, the LLM is able to correctly identify where the location takes place.
+        </p>
+        <p>
+            I intended to write the tests when I started working on the project and then write the code to pass the tests. But I 
+            ended up getting lost in the coding of the project quickly and it wasn't until I finished that I remembered to write
+            the tests. I will definitely write the tests first next time. I think that will help me to stay organized and focused 
+            while coding instead of jumping all over as I tend to do.
         </p>
     </li>
     
