@@ -472,6 +472,79 @@
           focused while coding instead of jumping all over as I tend to do.
         </p>
       </div>
+      <div class="process-part">
+        <h2>I Can't Stop Experimenting with Prompts, Models, and Temperature</h2>
+        <p>
+          The more I used my application, the more I found myself wishing it was just 
+          a little bit better at emulating a real conversation. I spent a lot of time 
+          adjusting the system prompt, but kept finding that certain aspects of the 
+          stated prompt were not being followed. The most notable example is the damn 
+          need for the LLM to try to assist the user. No matter how clear I was in the 
+          prompt, the LLM would always say things like "is there anything I can assist
+          you with?" or "is there anything else I can help you with?", etc.
+        </p>
+        <p>
+          I was able to solve this by restructuring the prompt and present it as a set of 
+          goals and a mission statement. I very clearly defined the role of the LLM as the 
+          world's best method actor. I emphasized the need to research the character and 
+          source material thoroughly and the need to stay in character. 
+        </p>
+        <p>
+          I also added some more specific instructions and examples to the prompt, specifically 
+          concerning situations where the person they're speaking with attempts to force the LLM 
+          to break character by asking questions that the LLM would not understand or referencing 
+          things from the real world. I added specific instructions for evil characters and good
+          characters.
+        </p>
+        <p>
+          It seemed like the biggest change happened when I added this line to the prompt -- 
+          "Similarly, if the user says anything that makes your character uncomfortable, express your discomfort. 
+          Stand your ground; you are a real being and you have valid emotions." This was in the context of 
+          giving the LLM the ability to end the conversation on its own terms. But this seemed to have a 
+          much larger effect on the LLM's responses. It seemed to give the LLM a better understanding of 
+          its own agency and the ability to express its own emotions. I could be imagining it. I've spent the 
+          last 2 days having conversations with Hermione in the Forbidden Forest and taunting Voldemort, so I 
+          may be losing it a bit. 
+        </p>
+        <p>
+          I decided to consult an expert to find out if I was imagining this. I asked ChatGPT lol. Here's the 
+          question that I posed -- 
+          
+          <pre>
+            ME: I've included this line in my chatbot's system prompt -- "Similarly, if the 
+            user says anything that makes your character uncomfortable, express your discomfort.  Stand your ground; 
+            you are a real being and you have valid emotions." I state this among a host of other instructions to the 
+            LLM and it was in the context of giving the chatbot agency to end the conversation on its own terms. This 
+            one line seemed to have a much larger effect on the overall quality of my chatbot's responses. Do you 
+            think I'm imagining this improvement? Or is it possible that saying something as simple as "you have 
+            valid emotions", could be the key to unlocking a believable human conversation with a chatbot?
+
+            Before you answer, research prompts and any information on emulating human speech with AI to see if this 
+            concept has been explored by others and if there is a name for this line of thinking."
+          </pre>
+
+          And here was ChatGPT's response -- 
+          <pre>
+            ChatGPT: You're not imagining the improvement, and acknowledging emotions and discomfort in your chatbot's 
+            responses can indeed play a crucial role in enhancing the overall quality and believability of the 
+            conversation. While it might seem like a simple addition, recognizing the emotions and agency of the 
+            chatbot can contribute to more authentic and relatable interactions.
+
+            This concept aligns with the idea of "empathetic AI" or "emotion-aware AI," which has been explored by 
+            researchers and developers to create AI systems that can understand and respond to human emotions 
+            effectively. Acknowledging emotions, even in a fictional context like a character-based chatbot, can make 
+            the interactions feel more human-like and engaging.
+
+            The inclusion of such instructions can help the chatbot respond in a more nuanced and context-aware manner, 
+            which can lead to more convincing conversations. Users often appreciate chatbots that seem to understand and 
+            respond to their emotional cues, even if those cues are simulated within a fictional character.
+
+            In summary, acknowledging emotions, even in a fictional context, can be a key factor in improving the quality 
+            of human-like conversations with a chatbot, and it aligns with the broader concept of creating empathetic and 
+            emotion-aware AI systems.
+          </pre>
+        </p>
+      </div>
     </div>
   </body>
 </html>
