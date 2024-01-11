@@ -1,0 +1,56 @@
+/* General Styles */
+body {
+  font-family: "Alegreya", serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+  padding: 0.5em;
+  text-align: center;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+/* Top Container */
+.top-container {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 1em;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+/* Process Parts */
+.process-part {
+  background-color: #e6e6e6;
+  margin: 1em;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .top-container, .process-part {
+    margin: 0.5em;
+    padding: 0.5em;
+  }
+}
+
+/* Goals and Tech Used Sections */
+.goals, .tech-used {
+  background-color: #e1f5d9;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bold {
+    font-weight: bold;
+}

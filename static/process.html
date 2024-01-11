@@ -4,78 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Character Chat Process Document</title>
+    <link rel="stylesheet" href="process_styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
   </head>
   <body>
-    <div class="header-div">
-      <h1>Project Description</h1>
-      <p>
-        Create a command line chat application where users can chat with their
-        favorite characters from books, tv, movies, etc. Users will input their
-        name, the character they want to chat with (source and character name),
-        and optionally a setting or situation for the chat (eg, "at a bar", "as
-        an old man/woman", "after certain events from the source", etc). Users
-        will be able to export the chat to a text file. (Don't worry about
-        saving chats once conversation has ended.)
-      </p>
-    </div>
-
-    <div class="goals">
-      <div class="required-goals">
-        <h2>Required Goals</h2>
-        <ul>
-          <li>
-            Ability for users to enter input -- username, source, character, and
-            optionally a setting or situation
-          </li>
-          <li>Ability for users to chat with their chosen character</li>
-          <li>Ability for users to end the chat</li>
-          <li>Ability for users to export chat to a text file</li>
-          <li>Create command line interface</li>
-          <li>
-            Create commands to save chat, end chat, change character, restart
-            chat.
-          </li>
-          <li>Test each step of the way</li>
-        </ul>
+    <div class="top-container">
+      <div class="header-div">
+        <h1>Character Chat</h1>
+        <h3>By Cory Suzuki</h3>
+        <p>
+          Create a command line chat application where users can chat with their
+          favorite characters from books, tv, movies, etc. Users will input their
+          name, the character they want to chat with (source and character name),
+          and optionally a setting or situation for the chat (eg, "at a bar", "as
+          an old man/woman", "after certain events from the source", etc). Users
+          will be able to export the chat to a text file.
+        </p>
       </div>
 
-      <div class="strech-goals">
-        <h2>Stretch Goals</h2>
-        <h4>
-          (Maybe hold off on these features until I implement the chatbot in my
-          website Bookcase Database)
-        </h4>
+      <div class="goals">
+        <div class="required-goals">
+          <h2>Required Goals</h2>
+          <ul>
+            <li>
+              Ability for users to enter input -- username, source, character, and
+              optionally a setting or situation
+            </li>
+            <li>Ability for users to chat with their chosen character</li>
+            <li>Ability for users to end the chat</li>
+            <li>Ability for users to export chat to a text file</li>
+            <li>Create command line interface</li>
+            <li>
+              Create commands to save chat, end chat, change character, restart
+              chat.
+            </li>
+            <li>Test each step of the way</li>
+          </ul>
+        </div>
+
+        <div class="strech-goals">
+          <h2>Stretch Goals</h2>
+          <h4>
+            (Maybe hold off on these features until I implement the chatbot in my
+            website Bookcase Database)
+          </h4>
+          <ul>
+            <li>
+              The chat will be saved in a database so that users can continue
+              their chat at a later time.
+            </li>
+            <li>Users can choose to chat with multiple characters at once.</li>
+            <li>
+              Create user accounts so that users can resume conversations without
+              a unique conversation id
+            </li>
+            <li>Implement database to save conversations and users etc</li>
+            <li>
+              Create 'text message' interface, use Dall-e to generate an
+              appropriate background image
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tech-used">
+        <h2>Technologies Used</h2>
         <ul>
-          <li>
-            The chat will be saved in a database so that users can continue
-            their chat at a later time.
-          </li>
-          <li>Users can choose to chat with multiple characters at once.</li>
-          <li>
-            Create user accounts so that users can resume conversations without
-            a unique conversation id
-          </li>
-          <li>Implement database to save conversations and users etc</li>
-          <li>
-            Create 'text message' interface, use Dall-e to generate an
-            appropriate background image
-          </li>
+          <li>Python</li>
+          <li>OpenAI API</li>
+          <li>rich</li>
+          <li>pytest</li>
+          <li>python-dotenv</li>
+          <li>Google Books API (not used in final version)</li>
+          <li>OMDb API (not used in final version)</li>
         </ul>
       </div>
     </div>
 
-    <div class="tech-used">
-      <h2>Technologies Used</h2>
-      <ul>
-        <li>Python</li>
-        <li>OpenAI API</li>
-        <li>rich</li>
-        <li>pytest</li>
-        <li>python-dotenv</li>
-        <li>Google Books API (not used in final version)</li>
-        <li>OMDb API (not used in final version)</li>
-      </ul>
-    </div>
 
     <div class="full-process">
       <h2>Process & What I Learned</h2>
@@ -506,10 +514,10 @@
           last 2 days having conversations with Hermione in the Forbidden Forest and taunting Voldemort, so I 
           may be losing it a bit. 
         </p>
-        <p>
+        <p class="bold">
           I decided to consult an expert to find out if I was imagining this. I asked ChatGPT lol. Here's the 
           question that I posed -- 
-          
+        </p>
           <pre>
             ME: I've included this line in my chatbot's system prompt -- "Similarly, if the 
             user says anything that makes your character uncomfortable, express your discomfort.  Stand your ground; 
@@ -522,8 +530,9 @@
             Before you answer, research prompts and any information on emulating human speech with AI to see if this 
             concept has been explored by others and if there is a name for this line of thinking."
           </pre>
-
+          <p class="bold">
           And here was ChatGPT's response -- 
+          </p>
           <pre>
             ChatGPT: You're not imagining the improvement, and acknowledging emotions and discomfort in your chatbot's 
             responses can indeed play a crucial role in enhancing the overall quality and believability of the 
@@ -543,7 +552,13 @@
             of human-like conversations with a chatbot, and it aligns with the broader concept of creating empathetic and 
             emotion-aware AI systems.
           </pre>
-        </p>
+      </div>
+      <div class="process-part">
+        <ul>
+          <li>
+            The source code for this project can be found here: <a href="https://github.com/MyPetLobster/character-chat">GitHub</a>
+          </li>
+        </ul>
       </div>
     </div>
   </body>
