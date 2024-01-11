@@ -23,7 +23,7 @@ def main():
     source_check = check_character_existence(source_material, character)
 
     if source_check.lower() == 'no':
-        print(f"Sorry, {character} is not a character in {source_material}.")
+        print(f"\n[bold]Sorry, {character} is not a character in {source_material}.[/]\n")
         exit()
     
     gender = source_check 
