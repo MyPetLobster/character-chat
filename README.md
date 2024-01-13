@@ -27,6 +27,11 @@ to revisit their favorite stories.
       - To confirm that you are in the folder, run the command ```dir``` (for Windows) or ```ls``` (for Mac or Linux), and you should see the following files: ```character_chat.py``` and ```.env```. 
       - To create the ```.env``` file, run the command ```type nul > .env``` (for Windows) or ```touch .env``` (for Mac or Linux). 
       - Then open the ```.env``` file in a text editor and paste the API key into the file after "OPENAI_API_KEY=". The file should look like this: ```OPENAI_API_KEY=<your_api_key_here>```. (Don't include the "<" and ">" symbols. No spaces.)
+      - Save the file and close it.
+
+### NOTE: By default, the program will use the GPT-3.5 Turbo model. However, the prompt is fine tuned for use with GPT-4. If you have access to GPT-4 and don't mind the increased API price, you can change the model to GPT-4 by changing the ```engine``` variable in the ```character_chat.py``` file from ```engine = "gpt-3.5-turbo"``` to ```engine = "gpt-4"```.
+
+#### NOTE: This README file was last updated on 2024-01-13. For updated model information and pricing, see the OpenAI pricing page at https://openai.com/pricing/.
 
 - **Step 6**: Run the application. In the command prompt, navigate to the ```character_chat/``` folder. To confirm that you are in the folder, run the command ```dir``` (for Windows) or ```ls``` (for Mac or Linux), and you should see the following files: ```character_chat.py``` and ```.env```. And you should see a folder called ```conversations```. To run the application, run the command ```python character_chat.py```. The application will start and you will be prompted to enter the source material, character name, and context. Once you have entered the information, the conversation will begin. Enjoy!
 

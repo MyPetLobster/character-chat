@@ -16,6 +16,7 @@ client = OpenAI()
 # create an instance of the Rich console
 console = Console()
 
+model="gpt-3.5-turbo"
 
 def main():
     source_material, character, setting = greet_user()
@@ -209,7 +210,7 @@ def initialize_conversation(source_material, character, setting):
     ]
 
 # define a function to send message to OpenAI and get response, set to temperature=1.3 for conversation
-def get_completion_from_messages(messages, model="gpt-3.5-turbo" , temperature=1.3):
+def get_completion_from_messages(messages, model=model , temperature=1.3):
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
