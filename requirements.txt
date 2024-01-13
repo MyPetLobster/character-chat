@@ -1,0 +1,4 @@
+openai==1.7.1
+pytest==7.4.4
+python-dotenv==1.0.0
+rich==13.7.0
