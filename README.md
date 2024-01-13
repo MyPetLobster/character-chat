@@ -1,10 +1,39 @@
-# Character Chat
+# Character Chat 
+### By Cory Suzuki (CS50 Python Final Project)
+#### 2024-01-13
+<br/>
 
-#### Video Demo: [URL HERE]
-
-#### Description:
+### Project Description:
 Character Chat is a conversational AI program that allows users to interact with their favorite fictional characters from books, movies, and TV shows. Users can engage in conversations, ask questions, and receive responses from their chosen character. This project aims to let users interact with their favorite characters in a fun, engaging way and to allow users 
 to revisit their favorite stories. 
+
+### Video Demo: [URL HERE]   
+<br/>     
+
+## How to Use
+
+- **Step 1**: Download the .zip file called "CharacterChat.zip" from the <a href="">GitHub repository</a>. (if you are familiar with GitHub, you can clone the repository instead)
+
+- **Step 2**: Extract the contents of the zip file to a folder on your computer.
+
+- **Step 3**: Install Python. Check if you have Python installed on your Windows computer. You can do this by opening a Command Prompt and running the command python --version. If Python is not installed, download and install it from the official Python website (https://www.python.org/downloads/). **Make sure to check the option to add Python to your PATH during installation.**
+
+
+- **Step 4**: Install dependencies. This project uses the OpenAI API, Rich library for styling the CLI output, and dotenv for storing and reading environment variables. To install these dependencies, open a Command Prompt and run the following command:
+```pip install - r requirements.txt```. The installations should only take a few moments. Once complete, check to make sure the dependencies were installed correctly by running the command ```pip list```. There will be a list of installed packages, just make sure that you see the following packages: ```rich```, ```openai```, and ```python-dotenv``` and we are good to go!
+
+- **Step 5**: **If your .env file already includes the API key, skip to Step 6.** Otherwise, create an OpenAI account. Go to https://beta.openai.com/ and create an account. Once you have created an account, go to the API Tokens page (https://beta.openai.com/account/api-tokens) and create a new API token. Then create a new file called ```.env``` within the ```character_chat/``` folder that you unzipped in Step 1. 
+      - To do this, open a Command Prompt and navigate to the ```character_chat/``` folder. 
+      - To confirm that you are in the folder, run the command ```dir``` (for Windows) or ```ls``` (for Mac or Linux), and you should see the following files: ```character_chat.py``` and ```.env```. 
+      - To create the ```.env``` file, run the command ```type nul > .env``` (for Windows) or ```touch .env``` (for Mac or Linux). 
+      - Then open the ```.env``` file in a text editor and paste the API key into the file after "OPENAI_API_KEY=". The file should look like this: ```OPENAI_API_KEY=<your_api_key_here>```. (Don't include the "<" and ">" symbols. No spaces.)
+
+- **Step 6**: Run the application. In the command prompt, navigate to the ```character_chat/``` folder. To confirm that you are in the folder, run the command ```dir``` (for Windows) or ```ls``` (for Mac or Linux), and you should see the following files: ```character_chat.py``` and ```.env```. And you should see a folder called ```conversations```. To run the application, run the command ```python character_chat.py```. The application will start and you will be prompted to enter the source material, character name, and context. Once you have entered the information, the conversation will begin. Enjoy!
+
+- **Have a suggestion or want to report a bug?** Please submit an issue on the <a href="">GitHub repository</a> or email Cory Suzuki at admin@bookcasedatabase.com.
+
+
+
 
 ## How it Works
 
@@ -21,10 +50,10 @@ Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI 
    - If the character does not exist, the program responds with "no" and the program exits.
 
 3. **Conversation with the Character**:
-   - Users can engage in a conversation with the character, staying true to the character's personality and voice.
+   - Users can engage in a conversation with the character, who will stay true to the character's personality and voice.
    - The AI character responds as the character would, drawing from the source material's context.
    - Users can continue the conversation until they choose to exit.
-   - If users make the character too angry, they may choose to leave the conversation.
+   - If users make the character too angry or uncomfortable, they have the agency to leave the conversation.
 
 4. **Save Conversations**:
    - Users have the option to save their conversations with the character for later reference.
@@ -37,5 +66,7 @@ Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI 
 - If the user strays from the character's world or asks questions the character wouldn't understand, the character may react accordingly, creating a dynamic and engaging experience.
 
 Character Chat aims to bring joy and creativity to interactions with beloved fictional characters. Enjoy your conversations, and may your favorite characters come to life through this AI-powered experience!
+
+If you are interested in a more detailed look at the process of creating the application, see the <a href="">Character Chat Process</a>. I keep detailed notes on the process while working on projects. I like having the notes to look back on and reference. 
 
 For questions or support, please contact Cory Suzuki at admin@bookcasedatabase.com
