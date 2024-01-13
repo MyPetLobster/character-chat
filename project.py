@@ -208,8 +208,8 @@ def initialize_conversation(source_material, character, setting):
         },
     ]
 
-# define a function to send message to OpenAI and get response, set to temperature=0.9 for conversation
-def get_completion_from_messages(messages, model="gpt-3.5-turbo" , temperature=1.5):
+# define a function to send message to OpenAI and get response, set to temperature=1.3 for conversation
+def get_completion_from_messages(messages, model="gpt-3.5-turbo" , temperature=1.3):
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
@@ -262,7 +262,7 @@ def have_conversation(conversation, character, gender):
                     print("\n[bold cyan]Goodbye![/]\n")
                     exit()
                 else:
-                    print(f"Conversation saved to conversations/{filename}")
+                    print(f"\n[bold cyan]Conversation saved to conversations/{filename}\[/]n")
                     conversation_file.close()
                     exit()
             conversation.append({'role': 'user', 'content': user_input})
