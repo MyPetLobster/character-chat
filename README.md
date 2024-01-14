@@ -17,7 +17,7 @@ to revisit their favorite stories.
 
 ## How to Use
 
-- **Step 1**: Download the .zip file called "CharacterChat.zip" from the <a href="https://github.com/MyPetLobster/character-chat">GitHub repository</a>. (if you are familiar with GitHub, you can clone the repository instead)
+- **Step 1**: Download the .zip file called "character_chat.zip" from the <a href="https://github.com/MyPetLobster/character-chat">GitHub repository</a>. (if you are familiar with GitHub, you can clone the repository instead)
 
 - **Step 2**: Extract the contents of the zip file to a folder on your computer.
 
