@@ -12,7 +12,7 @@ to revisit their favorite stories.
 
 ## How to Use
 
-- **Step 1**: Download the .zip file called "CharacterChat.zip" from the <a href="">GitHub repository</a>. (if you are familiar with GitHub, you can clone the repository instead)
+- **Step 1**: Download the .zip file called "CharacterChat.zip" from the <a href="https://github.com/MyPetLobster/character-chat">GitHub repository</a>. (if you are familiar with GitHub, you can clone the repository instead)
 
 - **Step 2**: Extract the contents of the zip file to a folder on your computer.
 
@@ -35,7 +35,7 @@ to revisit their favorite stories.
 
 - **Step 6**: Run the application. In the command prompt, navigate to the ```character_chat/``` folder. To confirm that you are in the folder, run the command ```dir``` (for Windows) or ```ls``` (for Mac or Linux), and you should see the following files: ```character_chat.py``` and ```.env```. And you should see a folder called ```conversations```. To run the application, run the command ```python character_chat.py```. The application will start and you will be prompted to enter the source material, character name, and context. Once you have entered the information, the conversation will begin. Enjoy!
 
-- **Have a suggestion or want to report a bug?** Please submit an issue on the <a href="">GitHub repository</a> or email Cory Suzuki at admin@bookcasedatabase.com.
+- **Have a suggestion or want to report a bug?** Please submit an issue on the <a href="https://github.com/MyPetLobster/character-chat">GitHub repository</a> or email Cory Suzuki at admin@bookcasedatabase.com.
 
 
 
@@ -72,6 +72,6 @@ Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI 
 
 Character Chat aims to bring joy and creativity to interactions with beloved fictional characters. Enjoy your conversations, and may your favorite characters come to life through this AI-powered experience!
 
-If you are interested in a more detailed look at the process of creating the application, see the <a href="">Character Chat Process</a>. I keep detailed notes on the process while working on projects. I like having the notes to look back on and reference. 
+If you are interested in a more detailed look at the process of creating the application, see the <a href="https://mypetlobster.github.io/character-chat-process/">Character Chat Process</a>. I keep detailed notes on the process while working on projects. I like having the notes to look back on and reference. 
 
 For questions or support, please contact Cory Suzuki at admin@bookcasedatabase.com
