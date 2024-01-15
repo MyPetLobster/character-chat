@@ -5,7 +5,9 @@
 #### 2024-01-13
 
 <br/>
-<img src="images/char_chat_cover.png" style="width: 800px">
+<img src="images/char_chat_cover.png" style="width: 800px" alt="A witch, detective and a superhero in a supersuit">
+
+*This image was created with the assistance of DALL·E*
 
 ### Project Description:
 
