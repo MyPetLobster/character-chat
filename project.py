@@ -135,6 +135,12 @@ def check_for_goodbye(response):
 
             If you are provided with the following response -- "It was a please meeting you. Until next time", 
             your response should be -- "goodbye".\n
+
+            If you are unsure if the response is meant to be the end of the conversation, respond with "continue". 
+            Often, an angry response may be a warning that the person is on the verge of ending the conversation, but 
+            that does not mean it is the end of the conversation. For example, if you are provided with the following
+            response -- "How dare you speak such profanities! Persist and you'll find my tolerance has its limits", 
+            your response should be -- "continue".\n
             
             If you cannot determine if the response is meant to be the end of the conversation, respond with "continue".
             If it is determined that the response is meant to be the end of the conversation, but you cannot determine
@@ -334,9 +340,11 @@ def have_conversation(conversation, character, gender):
 
             conversation_file.write(f"{character}: {response}\n\n")
 
-            if check_for_goodbye(response) == "angry goodbye":
-                rich_print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]\n")
-            elif check_for_goodbye(response) == "goodbye":
+            goodbye_check = check_for_goodbye(response)
+            if goodbye_check != "continue":
+                if goodbye_check == "angry goodbye":
+                    rich_print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]\n")
+
                 rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]\n")
                 save = console.input("\n[bold light_cyan1]You: ")
                 if save.lower() == 'n':
