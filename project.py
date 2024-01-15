@@ -1,11 +1,13 @@
+import datetime
+import os
+
 from openai import OpenAI
 from dotenv import load_dotenv
-from rich import print
-from rich.console import Console 
+from rich import print as rich_print
+from rich.console import Console
 from rich import box
 from rich.table import Table
-import os
-import datetime
+
 
 # load environment variables
 load_dotenv()
@@ -16,18 +18,20 @@ client = OpenAI()
 # create an instance of the Rich console
 console = Console()
 
-model="gpt-3.5-turbo"
+# set the model used for the conversation
+MODEL="gpt-3.5-turbo"
 
 def main():
+    '''Main function to run the program'''
     source_material, character, setting = greet_user()
 
     source_check = check_character_existence(source_material, character)
 
     if source_check.lower() == 'no':
-        print(f"\n[bold]Sorry, {character} is not a character in {source_material}.[/]\n")
+        rich_print(f"\n[bold]Sorry, {character} is not a character in {source_material}.[/]\n")
         exit()
-    
-    gender = source_check 
+
+    gender = source_check
 
     conversation = initialize_conversation(source_material, character, setting)
     have_conversation(conversation, character, gender)
@@ -43,13 +47,13 @@ def greet_user():
     intro_table = Table(box=box.SQUARE_DOUBLE_HEAD)
     intro_table.add_column("Welcome to the Character Chat!", header_style="bold cyan", justify="center")
     intro_table.add_row('''This program allows you to have a conversation with your favorite characters from your favorite books, movies, and TV shows.\n\nTalk about anything you want, but be careful who you summon. Not all characters are friendly.\n\nTo get started, you'll just have to enter the name of the source material and the character you want to talk to.''')
-    print("\n")
-    print(intro_table)
+    rich_print("\n")
+    rich_print(intro_table)
     
     source_material = console.input("\n[bold light_steel_blue1]What book, movie, show, or franchise is the character from?[/] ").capitalize()
     character = console.input("\n[bold thistle3]What is the name of the character?[/] ").capitalize()
     setting = console.input("\n[bold grey78]Where/when does the conversation take place? Any other context?[/] [italic](optional)[/] ")
-    print("\n[italic]Type [encircle red]'quit'[/encircle red] to exit the program at any time.[italic/]")
+    rich_print("\n[italic]Type [encircle red]'quit'[/encircle red] to exit the program at any time.[italic/]")
 
     return source_material, character, setting
 
@@ -95,8 +99,9 @@ def check_character_existence(source_material, character):
     response = check_source_completion(messages)
     return response.lower()
 
-# define a function to send message to OpenAI and get response, set to temperature=0.0 for source check
+# define a function to check get response for source check
 def check_source_completion(messages, model="gpt-3.5-turbo", temperature=0.0):
+    '''Set model and temperature for source check, send message to OpenAI and get response'''
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
@@ -209,7 +214,8 @@ def initialize_conversation(source_material, character, setting):
     ]
 
 # define a function to send message to OpenAI and get response, set to temperature=0.9 for conversation
-def get_completion_from_messages(messages, model=model , temperature=0.9):
+def get_completion_from_messages(messages, model=MODEL, temperature=0.9):
+    '''Set model and temperature for conversation, send message to OpenAI and get response'''
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
@@ -247,22 +253,22 @@ def have_conversation(conversation, character, gender):
 
     # Construct the filename
     filename = f"{character}_{timestamp}_{conversation_count:02d}.txt"
-    conversation_file = open(os.path.join("conversations", filename), "w")
+    conversation_file = open(os.path.join("conversations", filename), "w", encoding="utf-8")
 
     try:
         while True:
             user_input = console.input("\n[bold light_cyan1]You: [/]")
             conversation_file.write(f"You: {user_input}\n")
             if user_input.lower() == 'quit':
-                print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
+                rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
                 save = console.input("\n[bold light_cyan1]You: ")
                 if save.lower() == 'n':
                     conversation_file.close()
                     os.remove(os.path.join("conversations", filename))
-                    print("\n[bold cyan]Goodbye![/]\n")
+                    rich_print("\n[bold cyan]Goodbye![/]\n")
                     exit()
                 else:
-                    print(f"\n[bold cyan]Conversation saved to conversations/{filename}[/]\n")
+                    rich_print(f"\n[bold cyan]Conversation saved to conversations/{filename}[/]\n")
                     conversation_file.close()
                     exit()
             conversation.append({'role': 'user', 'content': user_input})
@@ -270,25 +276,25 @@ def have_conversation(conversation, character, gender):
             conversation.append({'role': 'assistant', 'content': response})
 
             if gender == "diverse":
-                print(f"\n[bold light_yellow3]{character}: [/]", response)
+                rich_print(f"\n[bold light_yellow3]{character}: [/]", response)
             elif gender == "female":
-                print(f"\n[bold plum2]{character}: [/]", response)
+                rich_print(f"\n[bold plum2]{character}: [/]", response)
             else:
-                print(f"\n[bold sea_green3]{character}: [/]", response)
+                rich_print(f"\n[bold sea_green3]{character}: [/]", response)
 
             conversation_file.write(f"{character}: {response}\n\n")
 
             if response.lower().endswith('goodbye.') or response.lower().endswith('goodbye') or response.lower().endswith('goodbye!'):
-                print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]")
-                print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
+                rich_print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]")
+                rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
                 save = console.input("\n[bold light_cyan1]You: ")
                 if save.lower() == 'n':
                     conversation_file.close()
                     os.remove(os.path.join("conversations", filename))
-                    print("\n[bold cyan]Goodbye![/]\n")
+                    rich_print("\n[bold cyan]Goodbye![/]\n")
                     exit()
                 else:
-                    print(f"Conversation saved to conversations/{filename}")
+                    rich_print(f"Conversation saved to conversations/{filename}")
                     conversation_file.close()
                     exit()
 
@@ -298,5 +304,3 @@ def have_conversation(conversation, character, gender):
 
 if __name__ == "__main__":
     main()
-
-
