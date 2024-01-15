@@ -16,7 +16,7 @@ client = OpenAI()
 # create an instance of the Rich console
 console = Console()
 
-model="gpt-4"
+model="gpt-3.5-turbo"
 
 def main():
     source_material, character, setting = greet_user()
