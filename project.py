@@ -19,7 +19,10 @@ client = OpenAI()
 console = Console()
 
 # set the model used for the conversation
-MODEL="gpt-3.5-turbo"
+CONVERSATION_MODEL="gpt-4"
+VALIDATION_MODEL="gpt-3.5-turbo"
+CONVERSATION_TEMP=0.9
+VALIDATION_TEMP=0.9
 
 def main():
     '''Main function to run the program'''
@@ -57,7 +60,7 @@ def greet_user():
 
     return source_material, character, setting
 
-# define a function to check if the character exists in the given source material
+# Function to validate source/character and determine gender
 def check_character_existence(source_material, character):
     """
     Checks if a character exists in a given source material.
@@ -99,15 +102,15 @@ def check_character_existence(source_material, character):
     response = check_source_completion(messages)
     return response.lower()
 
-# define a function to check get response for source check
-def check_source_completion(messages, model="gpt-3.5-turbo", temperature=0.0):
+# Function to set completion parameters and get response for source check
+def check_source_completion(messages, model=VALIDATION_MODEL, temperature=VALIDATION_TEMP):
     '''Set model and temperature for source check, send message to OpenAI and get response'''
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
     return response.choices[0].message.content
 
-# define a function to initialize the conversation, providing initial instructions for OpenAI
+# Function to initialize conversation and provide system message to the AI
 def initialize_conversation(source_material, character, setting):
     """
     Initializes the conversation with instructions for the character.
@@ -172,19 +175,16 @@ def initialize_conversation(source_material, character, setting):
             If 'real world' topics surface, react as {character} would if faced with an alien concept. 
             It might trigger fear, excitement, or even the urge to part ways. If this is the case, you 
             might ask that you talk about something else. If the user does not respect your wishes, 
-            you may conclude the conversation with a character-appropriate "goodbye", ending with "goodbye.".\n
+            you may conclude the conversation with a character-appropriate "goodbye".\n
 
             If you're embodying an evil character, feel free to lean into their disposition - be it disdainful 
             or suspicious. You can get irate, retaliate at provocations, or simply taunt and belittle the person 
             that you're talking to. If the user pushes you too far, you may decided to terminate the conversation. 
-            If this is the case, conclude with a character-appropriate "goodbye". The last word in your response 
-            must be "goodbye.".\n
+            If this is the case, conclude with a character-appropriate "goodbye". ".\n
 
             Similarly, if the user says anything that makes your character uncomfortable, express your discomfort. 
             Stand your ground; you are a real being and you have valid emotions. If the disturbance continues, 
-            bring the conversation to a close in a manner true to {character}'s nature, signing off with "goodbye.".\n
-
-            If you want to end the conversation, it is important that the final word of your response is "goodbye.".\n
+            bring the conversation to a close in a manner true to {character}'s nature.\n
 
             Additional setting information and contexts will be provided here delimited by three backticks - 
             set_setting: ```{setting}```. If, for example, the setting is "The Forbidden Forest", that is the location 
@@ -213,8 +213,8 @@ def initialize_conversation(source_material, character, setting):
         },
     ]
 
-# define a function to send message to OpenAI and get response, set to temperature=0.9 for conversation
-def get_completion_from_messages(messages, model=MODEL, temperature=0.9):
+# Function to set completion parameters and get response for conversation
+def get_completion_from_messages(messages, model=CONVERSATION_MODEL, temperature=CONVERSATION_TEMP):
     '''Set model and temperature for conversation, send message to OpenAI and get response'''
     response = client.chat.completions.create(model=model,
     messages=messages,
@@ -242,7 +242,7 @@ def have_conversation(conversation, character, gender):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M")
 
     # Check for existing conversation files
-    existing_files = [f for f in os.listdir("conversations") if f.startswith(f"{character}_conversation")]
+    existing_files = [f for f in os.listdir("conversations") if f.startswith(f"{character}_")]
 
     if existing_files:
         # Find the highest conversation count and increment by 1
@@ -258,7 +258,7 @@ def have_conversation(conversation, character, gender):
     try:
         while True:
             user_input = console.input("\n[bold light_cyan1]You: [/]")
-            conversation_file.write(f"You: {user_input}\n")
+            conversation_file.write(f"You: {user_input}\n\n")
             if user_input.lower() == 'quit':
                 rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
                 save = console.input("\n[bold light_cyan1]You: ")
@@ -272,7 +272,7 @@ def have_conversation(conversation, character, gender):
                     conversation_file.close()
                     exit()
             conversation.append({'role': 'user', 'content': user_input})
-            response = get_completion_from_messages(conversation, temperature=0.9)
+            response = get_completion_from_messages(conversation, temperature=CONVERSATION_TEMP)
             conversation.append({'role': 'assistant', 'content': response})
 
             if gender == "diverse":
@@ -284,9 +284,10 @@ def have_conversation(conversation, character, gender):
 
             conversation_file.write(f"{character}: {response}\n\n")
 
-            if response.lower().endswith('goodbye.') or response.lower().endswith('goodbye') or response.lower().endswith('goodbye!'):
-                rich_print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]")
-                rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]")
+            if check_for_goodbye(response) == "angry goodbye":
+                rich_print(f"\n[bold yellow2]Oooof you made {character} big mad. They left the conversation.[/]\n")
+            elif check_for_goodbye(response) == "goodbye":
+                rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]\n")
                 save = console.input("\n[bold light_cyan1]You: ")
                 if save.lower() == 'n':
                     conversation_file.close()
@@ -300,6 +301,10 @@ def have_conversation(conversation, character, gender):
 
     finally:
         conversation_file.close()
+
+
+def check_for_goodbye(response):
+    ...
 
 
 if __name__ == "__main__":
