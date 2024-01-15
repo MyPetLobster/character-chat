@@ -99,12 +99,62 @@ def check_character_existence(source_material, character):
     ]
 
     # Send message to OpenAI and get response
-    response = check_source_completion(messages)
+    response = validation_completion(messages)
     return response.lower()
 
+# Function to use OpenAI to check for goodbye and tone of goodbye
+def check_for_goodbye(response):
+    """
+        Checks if a character has ended the conversation.
+
+        Args:
+            response (str): The character's response.
+
+        Returns:
+            str: 'goodbye' if the character ends the conversation, 
+                 'angry goodbye' if the character ends the conversation angrily, 
+                 'continue' otherwise.
+    """
+    # Prepare a message for OpenAI
+    messages = [
+        {
+            'role':'system', 'content': '''You are a scholar of language. But the only words you can
+            speak are "goodbye", "angry goodbye", and "continue". You will be provided with a response 
+            from one side of a conversation. You must determine if the response is meant to be the end
+            of the conversation. If the response is meant to be the end of the conversation, you must 
+            determine if the person who sent the response is angry or not. If the response is an angry 
+            goodbye, you must respond with the words "angry goodbye". If the response is a normal goodbye 
+            or a normal end to the conversation, you must respond with the word "goodbye". If the response 
+            does not seem to be the end of the conversation, you must respond with the word "continue".\n
+            
+            For example, if you are provided with the following response -- "I'm done talking to you. Goodbye.",
+            your response should be -- "angry goodbye".\n
+
+            If you are provided with the following response -- "Hello! It's great to meet you. What are you 
+            doing out here?", your response should be -- "continue".\n
+
+            If you are provided with the following response -- "It was a please meeting you. Until next time", 
+            your response should be -- "goodbye".\n
+            
+            If you cannot determine if the response is meant to be the end of the conversation, respond with "continue".
+            If it is determined that the response is meant to be the end of the conversation, but you cannot determine
+            if the person who sent the response is angry or not, respond with "goodbye".\n
+            
+            Do not capitalize your response. Do not include punctuation. Do not include quotation marks.'''
+        },
+        {
+            'role':'user', 'content':f'''```{response}```'''
+        }
+    ]
+
+    # Send message to OpenAI and get response
+    response = validation_completion(messages)
+    return response.lower()
+
+
 # Function to set completion parameters and get response for source check
-def check_source_completion(messages, model=VALIDATION_MODEL, temperature=VALIDATION_TEMP):
-    '''Set model and temperature for source check, send message to OpenAI and get response'''
+def validation_completion(messages, model=VALIDATION_MODEL, temperature=VALIDATION_TEMP):
+    '''Set model and temperature for source and goodbye checks, send message to OpenAI and get response'''
     response = client.chat.completions.create(model=model,
     messages=messages,
     temperature=temperature)
@@ -302,9 +352,6 @@ def have_conversation(conversation, character, gender):
     finally:
         conversation_file.close()
 
-
-def check_for_goodbye(response):
-    ...
 
 
 if __name__ == "__main__":
