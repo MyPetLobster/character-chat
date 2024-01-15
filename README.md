@@ -5,6 +5,7 @@
 #### 2024-01-13
 
 <br/>
+<img src="images/char_chat_cover.png" style="width: 800px">
 
 ### Project Description:
 
@@ -21,7 +22,7 @@ to revisit their favorite stories.
 
 - **Step 2**: Extract the contents of the zip file to a folder on your computer.
 
-- **Step 3**: Install Python. Check if you have Python installed on your Windows computer. You can do this by opening a Command Prompt and running the command python --version. If Python is not installed, download and install it from the official Python website (https://www.python.org/downloads/). **Make sure to check the option to add Python to your PATH during installation.**
+- **Step 3**: Install Python. If you are using Windows, check if you have Python installed. You can do this by opening a Command Prompt and running the command `python --version`. If Python is not installed, download and install it from the official Python website (https://www.python.org/downloads/). **Make sure to check the option to add Python to your PATH during installation.**
 
 - **Step 4**: Install dependencies. This project uses the OpenAI API, Rich library for styling the CLI output, and dotenv for storing and reading environment variables. To install these dependencies, open a Command Prompt and run the following command:
   `pip install - r requirements.txt`. The installations should only take a few moments. Once complete, check to make sure the dependencies were installed correctly by running the command `pip list`. There will be a list of installed packages, just make sure that you see the following packages: `rich`, `openai`, and `python-dotenv` and we are good to go!
@@ -36,7 +37,7 @@ to revisit their favorite stories.
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;- Save the file and close it.
 
-### NOTE: By default, the program will use the GPT-3.5 Turbo model. However, the prompt is fine tuned for use with GPT-4. If you have access to GPT-4 and don't mind the increased API price, you can change the model to GPT-4 by changing the `engine` variable in the `character_chat.py` file from `engine = "gpt-3.5-turbo"` to `engine = "gpt-4"`.
+#### NOTE: By default, the program will use the GPT-3.5 Turbo model. However, the prompt is fine tuned for use with GPT-4. If you have access to GPT-4 and don't mind the increased API price, you can change the model to GPT-4 by changing the `engine` variable in the `character_chat.py` file from `engine = "gpt-3.5-turbo"` to `engine = "gpt-4"`.
 
 #### NOTE: This README file was last updated on 2024-01-13. For updated model information and pricing, see the OpenAI pricing page at https://openai.com/pricing/.
 
@@ -44,7 +45,13 @@ to revisit their favorite stories.
 
 - **Have a suggestion or want to report a bug?** Please submit an issue on the <a href="https://github.com/MyPetLobster/character-chat">GitHub repository</a> or email Cory Suzuki at admin@bookcasedatabase.com.
 
-## How it Works
+### NOTE: If you'd rather not bother with any of that, create a free account on Replit.com and run the program in the browser. You can find the program at https://replit.com/@CorySuzuki2/Character-Chat. Just press the "Run" button. If you see errors regarding OpenAI or API key, that means my API key has hit the monthly limit. Send me an email at admin@bookcasedatabase.com or feel free to use your own API key. Simply replace "OPENAI_API_KEY" with your actual key in this line -- 
+
+`client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))`
+
+<br/>
+
+# How it Works
 
 Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI conversation with fictional characters. Here's how the program operates:
 
@@ -77,7 +84,7 @@ Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI 
 - Users can exit the conversation at any time by typing "quit."
 - If the user strays from the character's world or asks questions the character wouldn't understand, the character may react accordingly, creating a dynamic and engaging experience.
 
-Character Chat aims to bring joy and creativity to interactions with beloved fictional characters. Enjoy your conversations, and may your favorite characters come to life through this AI-powered experience!
+Character Chat aims to bring joy and creativity to interactions with beloved fictional characters. Enjoy your conversations! Tell Voldemort he's a turd for me!
 
 If you are interested in a more detailed look at the process of creating the application, see the <a href="https://mypetlobster.github.io/character-chat-process/">Character Chat Process</a>. I keep detailed notes on the process while working on projects. I like having the notes to look back on and reference.
 
