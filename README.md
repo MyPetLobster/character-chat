@@ -67,7 +67,10 @@ Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI 
    - The program checks if the specified character exists in the given source material.
    - If the character exists, it identifies the character's gender as 'male,' 'female,' or 'diverse' in
      order to set the color of the character's name in the chat.
-   - If the character does not exist, the program responds with "no" and the program exits.
+   - If the character does not exist, the check function returns "no" and the program exits.
+   - I used a separate instance of GPT, this time using the gpt-3.5-turbo model with a temperature of 0.0 
+      to run the existence check. This model is much faster and cheaper than the GPT-4 model, and with 
+      strict instructions in the system message, it works great.
 
 3. **Conversation with the Character**:
 
@@ -76,8 +79,31 @@ Character Chat is built using OpenAI's GPT-3.5 Turbo model, which powers the AI 
    - Users can continue the conversation until they choose to exit.
    - If users make the character too angry or uncomfortable, they have the agency to leave the conversation.
 
-4. **Save Conversations**:
-   - Users have the option to save their conversations with the character for later reference.
+4. **Goodbye Check**:
+   - Users can exit the conversation at any time by typing "quit", but I wanted to add a little more realism to the 
+      experience and I also wanted the AI to have the agency to end the conversation on its own if the user pushed the
+      character too far. So I created a "goodbye check". 
+   - Version One of the goodbye required modifying the chatbot's prompt to force it to end the sentence with the word
+      "goodbye". Then I just used some python string manipulation to check if the last word of the chatbot's response
+      was "goodbye". If it was, the program would end the conversation. This worked, but it was a little clunky and 
+      did not feel natural depending on the character I was speaking to. So I decided to try something else.
+   - Version 2 of the goodbye check uses a separate instance of GPT-3.5 Turbo to check if the chatbot's response 
+      seems to be a goodbye. No specific word checks whatsoever. I once again used the capability of LLMs to replace 
+      a standard python function. I created another function that is essentially just an initial system message with 
+      instructions for the LLM, then I used the same validation_completion() function that uses gpt-3.5-turbo with a
+      temperature of 0.0 to check if the chatbot's response SEEMS to be a goodbye. I also added a check to see if the
+      goodbye seems to be an angry goodbye. Either way, the program will end the conversation if the chatbot's response
+      seems to be a goodbye, but if it seems to be an angry goodbye, the program will also print a message to the user 
+      letting them know that they have made the character angry and that the character has ended the conversation.
+   - It works amazingly well. I have tested it with several characters and it has worked perfectly every time. I am 
+      very happy with the results. 
+   - This was an enlightening experience and realization. I think I'll be using LLMs in a lot of other ways in my 
+      future projects. I'm excited to see what else I can do with them.
+
+5. **Save Conversations**:
+   - Users have the option to save their conversations with the character for later reference. 
+   - A folder called `/conversations/` is created in the `character_chat/` folder if it does not already exist.
+   - The conversation is saved as a text file in the `/conversations/` folder with the name of the character and the date and time of the conversation. If there are multiple conversations with the same character, the file names will be numbered.
 
 ## Design Choices
 

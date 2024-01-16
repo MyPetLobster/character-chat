@@ -157,8 +157,7 @@ def check_for_goodbye(response):
     response = validation_completion(messages)
     return response.lower()
 
-
-# Function to set completion parameters and get response for source check
+# Function to set completion parameters and get response for source check and goodbye check
 def validation_completion(messages, model=VALIDATION_MODEL, temperature=VALIDATION_TEMP):
     '''Set model and temperature for source and goodbye checks, send message to OpenAI and get response'''
     response = client.chat.completions.create(model=model,
@@ -310,7 +309,6 @@ def have_conversation(conversation, character, gender):
 
     finally:
         conversation_file.close()
-
 
 
 if __name__ == "__main__":
