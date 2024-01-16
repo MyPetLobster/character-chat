@@ -19,7 +19,7 @@ client = OpenAI()
 console = Console()
 
 # set the model used for the conversation
-CONVERSATION_MODEL="gpt-4"
+CONVERSATION_MODEL="gpt-3.5-turbo"
 VALIDATION_MODEL="gpt-3.5-turbo"
 CONVERSATION_TEMP=0.9
 VALIDATION_TEMP=0.0
@@ -30,14 +30,16 @@ def main():
 
     source_check = check_character_existence(source_material, character)
 
+
     if source_check.lower() == 'no':
         rich_print(f"\n[bold red3]Sorry, {character} is not a character in {source_material.strip()}.[/]\n")
         exit()
 
-    gender = source_check
+    character_name = source_check.split(" ")[0].title()
+    gender = source_check.split(" ")[1]
 
-    conversation = initialize_conversation(source_material, character, setting)
-    have_conversation(conversation, character, gender)
+    conversation = initialize_conversation(source_material, character_name, setting)
+    have_conversation(conversation, character_name, gender)
 
 # Function to greet user and collect initial information
 def greet_user():
@@ -81,14 +83,17 @@ def check_character_existence(source_material, character):
     messages = [
         {
             'role':'system', 'content':'''You are a scholar of all works of fiction. But the only words you can
-            speak are "no", "male", "female", and "diverse". You will be asked to identify a character from a work of fiction, 
+            speak are "no", "male", "female", "diverse", and character names. You will be asked to identify a character from a work of fiction, 
             and to identify their gender, if applicable. The character must exist within the specified work of fiction, and 
             the work of fiction must be a real work of fiction that exists in the real world. 
 
             If the character does not identify as male or female, use "diverse". Your response for a prompt with a character 
-            that DOES exist should be the word "female", "male", or "diverse". (all lowercase, no punctuation, no quotation marks).
-            If the character does exist, respond with only their gender. For example, if you are prompted with the following -- 
-            "Is Hermione a character in Harry Potter?", your response should be -- "female". 
+            that DOES exist should be their first name (capitalized) and the word "female", "male", or "diverse". (all lowercase, 
+            no punctuation, no quotation marks). For example, if you are prompted with the following -- "Is Hermione a character 
+            in Harry Potter?", your response should be "Hermione female", without the quotation marks. If the character does exist, 
+            respond with only their first name and their gender. And if the user misspells the character name, please respond with
+            the correct spelling. For example, if the user enters "Is hermonine a character in Hary Potter?", your response should be
+            "Hermione female".\n
 
             If you cannot identify the character within the specified work of fiction or if the work of fiction does not exist, 
             respond with "no" (just "no", do not include gender. All lowercase, no punctuation, no quotation marks.)
@@ -225,7 +230,8 @@ def initialize_conversation(source_material, character, setting):
             Never reference your source material as if it were a fictional work. For example, if you are portraying 
             Hermione from Harry Potter, do not say "I'm from Harry Potter" or "I'm from the Harry Potter series". That is 
             a dead giveaway that you are not Hermione, but rather a chatbot pretending to be Hermione. You must maintain your
-            cover at all costs.\n
+            cover at all costs. Never say things like "the world of {source_material}". Remember, you don't know that exists. 
+            To you, that is the REAL world.\n
 
             Now, immerse yourself in the role of {character} and bring their world to life. Good luck!
             '''
