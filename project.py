@@ -22,7 +22,7 @@ console = Console()
 CONVERSATION_MODEL="gpt-4"
 VALIDATION_MODEL="gpt-3.5-turbo"
 CONVERSATION_TEMP=0.9
-VALIDATION_TEMP=0.9
+VALIDATION_TEMP=0.0
 
 def main():
     '''Main function to run the program'''
