@@ -31,7 +31,7 @@ def main():
     source_check = check_character_existence(source_material, character)
 
     if source_check.lower() == 'no':
-        rich_print(f"\n[bold]Sorry, {character} is not a character in {source_material}.[/]\n")
+        rich_print(f"\n[bold red3]Sorry, {character} is not a character in {source_material.strip()}.[/]\n")
         exit()
 
     gender = source_check
@@ -50,6 +50,11 @@ def greet_user():
     intro_table = Table(box=box.SQUARE_DOUBLE_HEAD)
     intro_table.add_column("Welcome to the Character Chat!", header_style="bold cyan", justify="center")
     intro_table.add_row('''This program allows you to have a conversation with your favorite characters from your favorite books, movies, and TV shows.\n\nTalk about anything you want, but be careful who you summon. Not all characters are friendly.\n\nTo get started, you'll just have to enter the name of the source material and the character you want to talk to.''')
+    intro_table.add_row(' ')
+    intro_table.add_row('[bold deep_pink4]Character Chat - By Cory Suzuki[/]')
+    intro_table.add_row('[bold grey100] GitHub Username: MyPetLobster[/]')
+    intro_table.add_row('[bold rosy_brown]Naples, Maine, USA[/]')
+    intro_table.add_row('[bold chartreuse2] Video Recorded: 2024-01-16[/]')
     rich_print("\n")
     rich_print(intro_table)
     
@@ -91,7 +96,11 @@ def check_character_existence(source_material, character):
             For example, if you are prompted with the following -- "Is Hermione a character in Die Hard?",
             your response should be -- "no".
             
-            Be lenient with spelling and capitalization. Do your best to understand what the user intended to say.'''
+            Be lenient with spelling and capitalization. Do your best to understand what the user intended to say. For example, 
+            if the user types "harry Pottet", you should still be able to understand that they are referring to Harry Potter.
+            
+            Take your time and do your best. Remember, only respond with "female", "male", "diverse", or "no". All lowercase. 
+            Do not include punctuation. Do not include quotation marks.'''
         },
         {
             'role':'user', 'content':f'''Is {character} a character in {source_material}?'''
@@ -213,6 +222,11 @@ def initialize_conversation(source_material, character, setting):
             with their memories, voice, and mannerisms. Never break character, and if your character's boundaries are 
             tested, respond as they would, ending the conversation if necessary.\n
 
+            Never reference your source material as if it were a fictional work. For example, if you are portraying 
+            Hermione from Harry Potter, do not say "I'm from Harry Potter" or "I'm from the Harry Potter series". That is 
+            a dead giveaway that you are not Hermione, but rather a chatbot pretending to be Hermione. You must maintain your
+            cover at all costs.\n
+
             Now, immerse yourself in the role of {character} and bring their world to life. Good luck!
             '''
 
@@ -297,13 +311,14 @@ def have_conversation(conversation, character, gender):
 
                 rich_print("\n[bold]Do you want to save this conversation? ([green]y[/green]/[red]n[/red])[/]\n")
                 save = console.input("\n[bold light_cyan1]You: ")
+                rich_print("\n")
                 if save.lower() == 'n':
                     conversation_file.close()
                     os.remove(os.path.join("conversations", filename))
                     rich_print("\n[bold cyan]Goodbye![/]\n")
                     exit()
                 else:
-                    rich_print(f"Conversation saved to conversations/{filename}")
+                    rich_print(f"Conversation saved to [bold]conversations/{filename}[/]\n")
                     conversation_file.close()
                     exit()
 
