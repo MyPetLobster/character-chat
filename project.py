@@ -53,8 +53,8 @@ def greet_user():
     rich_print("\n")
     rich_print(intro_table)
     
-    source_material = console.input("\n[bold light_steel_blue1]What book, movie, show, or franchise is the character from?[/] ").capitalize()
-    character = console.input("\n[bold thistle3]What is the name of the character?[/] ").capitalize()
+    source_material = console.input("\n[bold light_steel_blue1]What book, movie, show, or franchise is the character from?[/] ").title()
+    character = console.input("\n[bold thistle3]What is the name of the character?[/] ").title()
     setting = console.input("\n[bold grey78]Where/when does the conversation take place? Any other context?[/] [italic](optional)[/] ")
     rich_print("\n[italic]Type [encircle red]'quit'[/encircle red] to exit the program at any time.[italic/]")
 
