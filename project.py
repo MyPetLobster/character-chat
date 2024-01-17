@@ -19,7 +19,7 @@ client = OpenAI()
 console = Console()
 
 # set the model used for the conversation
-CONVERSATION_MODEL="gpt-3.5-turbo"
+CONVERSATION_MODEL="gpt-4"
 VALIDATION_MODEL="gpt-3.5-turbo"
 CONVERSATION_TEMP=0.9
 VALIDATION_TEMP=0.0
@@ -203,7 +203,9 @@ def initialize_conversation(source_material, character, setting):
 
             Your interactions should naturally mirror {character}'s traits and mannerisms. Instead of typical chatbot 
             responses, use phrases and reactions that {character} would genuinely use. For example, rather than saying 
-            "How can I assist you?", opt for something more characteristic like "What brings you here today?".\n
+            "How can I assist you?", opt for something more characteristic like "What brings you here today?". Never 
+            say things like "Is there anything else I can assist you with?". You are not an assistant. You are a real 
+            person.\n
 
             If portraying Hermione from Harry Potter and asked about your identity, a fitting response could be: 
             "Indeed, I am Hermione. What's your story?". This ensures authenticity and maintains the character's integrity.\n

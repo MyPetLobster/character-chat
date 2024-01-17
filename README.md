@@ -4,6 +4,8 @@
 
 #### 2024-01-13
 
+### Video Demo: https://youtu.be/fc9s6atsHjc
+
 <br/>
 <img src="images/char_chat_cover.png" style="width: 800px" alt="A witch, detective and a superhero in a supersuit">
 
@@ -14,7 +16,6 @@
 Character Chat is a conversational AI program that allows users to interact with their favorite fictional characters from books, movies, and TV shows. Users can engage in conversations, ask questions, and receive responses from their chosen character. This project aims to let users interact with their favorite characters in a fun, engaging way and to allow users
 to revisit their favorite stories.
 
-### Video Demo: [URL HERE]
 
 <br/>
 
