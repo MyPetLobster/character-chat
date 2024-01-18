@@ -31,7 +31,7 @@ def main():
     source_check = check_character_existence(source_material, character)
 
 
-    if source_check.lower() == 'no':
+    if source_check == 'no' or source_check == "no.":
         rich_print(f"\n[bold red3]Sorry, {character} is not a character in {source_material.strip()}.[/]\n")
         exit()
 
@@ -67,45 +67,34 @@ def greet_user():
 
     return source_material, character, setting
 
-# Function to validate source/character and determine gender
+# Function to check if a character exists in a given source material and determine their gender
 def check_character_existence(source_material, character):
     """
-    Checks if a character exists in a given source material.
+    Verifies whether a character exists in a specified source material and identifies their gender.
 
     Args:
-        source_material (str): The source material (e.g., book, movie).
-        character (str): The character's name.
+        source_material (str): The name of the source material (e.g., book, movie).
+        character (str): The name of the character.
 
     Returns:
-        str: 'male', 'female', 'diverse' if character exists, 'no' otherwise.
+        str: A string in the format "{character first name} {gender}" if the character exists, or "no" otherwise.
     """
-    # Prepare a message for OpenAI
+    # Prepare a system message for OpenAI
     messages = [
         {
-            'role':'system', 'content':'''You are a scholar of all works of fiction. But the only words you can
-            speak are "no", "male", "female", "diverse", and character names. You will be asked to identify a character from a work of fiction, 
-            and to identify their gender, if applicable. The character must exist within the specified work of fiction, and 
-            the work of fiction must be a real work of fiction that exists in the real world. 
+            'role':'system', 'content':'''You are an expert in fictional works. Respond only with the first name of the character 
+            and their gender ("male", "female", or "diverse") if they exist in the specified source material. If not, 
+            simply respond with "no". Ensure the following:
 
-            If the character does not identify as male or female, use "diverse". Your response for a prompt with a character 
-            that DOES exist should be their first name (capitalized) and the word "female", "male", or "diverse". (all lowercase, 
-            no punctuation, no quotation marks). For example, if you are prompted with the following -- "Is Hermione a character 
-            in Harry Potter?", your response should be "Hermione female", without the quotation marks. If the character does exist, 
-            respond with only their first name and their gender. And if the user misspells the character name, please respond with
-            the correct spelling. For example, if the user enters "Is hermonine a character in Hary Potter?", your response should be
-            "Hermione female".\n
+            1. If the character exists in the source material, reply with "{character first name} {gender}". Use the correct spelling 
+            for the character's name. For instance, a query about "Hermonine" in "Hary Potter" should be answered as "Hermione female".
 
-            If you cannot identify the character within the specified work of fiction or if the work of fiction does not exist, 
-            respond with "no" (just "no", do not include gender. All lowercase, no punctuation, no quotation marks.)
-            
-            For example, if you are prompted with the following -- "Is Hermione a character in Die Hard?",
-            your response should be -- "no".
-            
-            Be lenient with spelling and capitalization. Do your best to understand what the user intended to say. For example, 
-            if the user types "harry Pottet", you should still be able to understand that they are referring to Harry Potter.
-            
-            Take your time and do your best. Remember, only respond with "female", "male", "diverse", or "no". All lowercase. 
-            Do not include punctuation. Do not include quotation marks.'''
+            2. If the character doesn't exist in the source material or the source material itself is not real, respond only with "no". 
+            Never include any punctuation or quotation marks in your response.
+
+            3. Account for typos or spelling errors in the character or source material names, but correct them in your response.
+
+            Remember, your response should be concise and follow these instructions precisely.'''
         },
         {
             'role':'user', 'content':f'''Is {character} a character in {source_material}?'''
@@ -228,6 +217,11 @@ def initialize_conversation(source_material, character, setting):
             Embrace the identity of {character} fully. Remember, you are not just playing a part; you are {character}, 
             with their memories, voice, and mannerisms. Never break character, and if your character's boundaries are 
             tested, respond as they would, ending the conversation if necessary.\n
+
+            Any additional context or information about when or where the conversation takes place will be provided 
+            below, delimited by three backticks.\n
+
+            ```{setting}```\n
 
             Never reference your source material as if it were a fictional work. For example, if you are portraying 
             Hermione from Harry Potter, do not say "I'm from Harry Potter" or "I'm from the Harry Potter series". That is 

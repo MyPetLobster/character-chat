@@ -1,10 +1,11 @@
 import pytest
-from project import check_character_existence, initialize_conversation, get_completion_from_messages
+import string
+from project import check_character_existence, initialize_conversation, get_completion_from_messages, validation_completion
 
 # Define test data
 valid_source_material = ["Harry Potter", "harry ptter", "Harry Potter and the Sorcerer's Stone"]
 invalid_source_material = ["hdfhdfsk", "family guy", "LotR"]
-valid_characters = ["Harry", "hermione", "Ron Weasley", "Hedwig"]
+valid_characters = ["Harry", "hermione", "Ron", "Hedwig"]
 invalid_characters = ["Cory", "Topanga", "wizard", "Darth Vader"]
 setting_list = ["in the Forbidden Forest", "In the Great Hall", "walking to Hogsmeade", "in the Chamber of Secrets"]
 
@@ -13,25 +14,28 @@ setting_list = ["in the Forbidden Forest", "In the Great Hall", "walking to Hogs
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in valid_source_material for c in valid_characters])
 def test_check_character_existence(source_material, character):
     source_check = check_character_existence(source_material, character)
-    assert source_check.lower() == 'diverse' or source_check.lower() == 'female' or source_check.lower() == 'male'
+    name = source_check.split(" ")[0]
+    gender = source_check.split(" ")[1]
+    assert name.lower() == character.lower()
+    assert gender == 'diverse' or gender == 'female' or gender == 'male'
 
 # Check invalid_source and invalid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in invalid_source_material for c in invalid_characters])
 def test_check_character_existence_invalid_1(source_material, character):
     source_check = check_character_existence(source_material, character)
-    assert source_check.lower() == 'no'
+    assert source_check.lower() == 'no' or source_check.lower() == 'no.'
 
 # Check valid_source and invalid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in valid_source_material for c in invalid_characters])
 def test_check_character_existence_invalid_2(source_material, character):
     source_check = check_character_existence(source_material, character)
-    assert source_check.lower() == 'no'
+    assert source_check.lower() == 'no' or source_check.lower() == 'no.'
 
 # Check invalid_source and valid_character
 @pytest.mark.parametrize("source_material, character", [(s, c) for s in invalid_source_material for c in valid_characters])
 def test_check_character_existence_invalid_3(source_material, character):
     source_check = check_character_existence(source_material, character)
-    assert source_check.lower() == 'no'
+    assert source_check.lower() == 'no' or source_check.lower() == 'no.'
 
 
 # Test initialize_conversation and get_completion_from_messages function -- GENERIC CHECK
@@ -73,6 +77,17 @@ def test_get_completion_from_messages_specific():
     )
     response = get_completion_from_messages(conversation)
     assert isinstance(response, str)
+    response = response.translate(str.maketrans('', '', string.punctuation))
     responses = response.split(" ")
     assert "Hermione" in responses
     assert "Forbidden" in responses
+
+
+# Test validation_completion function
+def test_validation_completion():
+    message = [ 
+        {"role": "user", "content": '''This is a test. Respond with "working", do not include the quotes in your response. 
+        Do not include punctuation. Respond with all lowercase. Just respond with "working".'''},
+    ]
+    response = validation_completion(message)
+    assert response == "working"
