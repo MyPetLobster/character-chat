@@ -54,9 +54,8 @@ def greet_user():
     intro_table.add_row('''This program allows you to have a conversation with your favorite characters from your favorite books, movies, and TV shows.\n\nTalk about anything you want, but be careful who you summon. Not all characters are friendly.\n\nTo get started, you'll just have to enter the name of the source material and the character you want to talk to.''')
     intro_table.add_row(' ')
     intro_table.add_row('[bold deep_pink4]Character Chat - By Cory Suzuki[/]')
-    intro_table.add_row('[bold grey100] GitHub Username: MyPetLobster[/]')
-    intro_table.add_row('[bold rosy_brown]Naples, Maine, USA[/]')
-    intro_table.add_row('[bold chartreuse2] Video Recorded: 2024-01-16[/]')
+    intro_table.add_row(' ')
+    intro_table.add_row('[bold chartreuse3] https://github.com/MyPetLobster/character-chat[/]')
     rich_print("\n")
     rich_print(intro_table)
     
